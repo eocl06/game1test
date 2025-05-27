@@ -796,7 +796,7 @@ function handleAnswer(userChoiceIsReal) {
 
     if (userChoiceIsReal === null) {
         feedbackTitleElement.textContent = "Süre Bitti!"; feedbackIcon.textContent = "timer_off"; feedbackIcon.classList.add('timeup-icon'); feedbackBox.classList.add('incorrect-feedback');
-        feedbackStr = `Bu soru için süreniz doldu. Doğru cevap: <strong>${currentQuestion.isReal ? 'GERÇEK' : 'SAHTE'}</strong> idi.<br><br>${currentQuestion.explanation || ''}`;
+feedbackStr = `Bu soru için süreniz doldu.<br>Doğru cevap: <strong>${currentQuestion.isReal ? 'GERÇEK' : 'SAHTE'}</strong><br><br>${currentQuestion.explanation || ''}`;
     } else if (wasCorrect) {
         feedbackTitleElement.textContent = "Bildin!"; feedbackIcon.textContent = "check_circle"; feedbackIcon.classList.add('status-icon-correct'); feedbackBox.classList.add('correct-feedback');
         feedbackStr = currentQuestion.explanation || (currentQuestion.isReal ? "Bu haber gerçekten doğru." : "Bu haberin sahte olduğunu doğru tespit ettin.");
@@ -1116,7 +1116,7 @@ if (homeNavProfile && profileDisabledPopup) {
     });
 }
 
-function typeWriter(text, i, speed = 50) {
+function typeWriter(text, i, speed = 25) {
     if (i < text.length) {
         editorQuote.innerHTML = text.substring(0, i + 1);
         editorQuote.classList.remove('typing-done');
