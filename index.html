@@ -87,8 +87,6 @@ body.loading #appRoot > .main-screen-view { opacity: 0; transform: scale(0.98); 
     text-transform: uppercase;
     align-self: flex-start; /* Metin bloğunun başında sola yaslı */
     line-height: 1; /* Dikey hizalamayı iyileştirmek için */
-    /* `card-gradient` div'indeki `space-y-1 sm:space-y-2`
-        etiket ile başlık arasında zaten boşluk bırakacaktır. */
 }
 
 .sponsored-news-card .sponsored-badge {
@@ -105,7 +103,7 @@ html, body {
 
 /* Editöre Sor Butonu Stilleri */
 #askEditorBtn {
-    background-color: #DC2626; /* Tailwind red-600 */
+    background-color: #F43F5E; /* Tailwind rose-500 */
     color: white;
     padding: 0.5rem 0.75rem; /* sm:px-3 sm:py-2 */
     border-radius: 0.5rem; /* Tailwind rounded-lg */
@@ -114,10 +112,13 @@ html, body {
     display: flex;
     align-items: center;
     gap: 0.375rem; /* Tailwind gap-1.5 */
-    transition: background-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out, opacity 0.2s ease-in-out, transform 0.1s ease-in-out;
 }
-#askEditorBtn:hover {
-    background-color: #B91C1C; /* Tailwind red-700 */
+#askEditorBtn:hover:not(.disabled) { /* Sadece aktifken hover rengi değişsin */
+    background-color: #E11D48; /* Tailwind rose-600 */
+}
+#askEditorBtn:active:not(.disabled) { /* Sadece aktifken active ölçeği */
+    transform: scale(0.96);
 }
 #askEditorBtn.disabled {
     background-color: #9CA3AF; /* Tailwind gray-400 */
@@ -279,15 +280,22 @@ html, body {
 </div>
 </div>
 </header>
-<main class="flex-1 overflow-y-auto p-4 flex flex-col items-center justify-start space-y-4 sm:space-y-6"> <div class="flex w-full items-center justify-between gap-2 px-1 sm:px-2 mt-2 mb-1"> <div class="flex gap-2 sm:gap-3 items-center"> <div class="flex flex-col items-center gap-1"> <div id="timerMinutesBox" class="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-slate-200 shadow-inner">
-                    <p id="timerMinutes" class="text-gray-900 text-lg sm:text-xl font-bold">00</p> </div>
-                <p class="text-gray-600 text-[10px] sm:text-xs font-medium">Dakika</p> </div>
-            <div class="flex items-center text-gray-400 text-lg sm:text-xl font-bold pt-1 pb-4 sm:pb-5">:</div> <div class="flex flex-col items-center gap-1"> <div id="timerSecondsBox" class="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-slate-200 shadow-inner">
-                    <p id="timerSeconds" class="text-gray-900 text-lg sm:text-xl font-bold">15</p> </div>
-                <p class="text-gray-600 text-[10px] sm:text-xs font-medium">Saniye</p> </div>
+<main class="flex-1 overflow-y-auto p-4 flex flex-col items-center justify-start space-y-3 sm:space-y-4"> <div class="flex w-full items-center justify-between gap-2 px-1 sm:px-2 my-3 sm:my-4"> <div class="flex gap-2 sm:gap-3 items-center">
+            <div class="flex flex-col items-center gap-1">
+                <div id="timerMinutesBox" class="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-slate-200 shadow-inner">
+                    <p id="timerMinutes" class="text-gray-900 text-lg sm:text-xl font-bold">00</p>
+                </div>
+                <p class="text-gray-600 text-[10px] sm:text-xs font-medium">Dakika</p>
+            </div>
+            <div class="flex items-center text-gray-400 text-lg sm:text-xl font-bold pt-1 pb-4 sm:pb-5">:</div>
+            <div class="flex flex-col items-center gap-1">
+                <div id="timerSecondsBox" class="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-slate-200 shadow-inner">
+                    <p id="timerSeconds" class="text-gray-900 text-lg sm:text-xl font-bold">15</p>
+                </div>
+                <p class="text-gray-600 text-[10px] sm:text-xs font-medium">Saniye</p>
+            </div>
         </div>
-        <button id="askEditorBtn" class="btn-animated">
-            <span class="material-icons-outlined text-lg mr-1">support_agent</span>
+        <button id="askEditorBtn" class="btn-animated"> <span class="material-icons-outlined text-lg mr-1">support_agent</span>
             <span id="askEditorBtnText">Editöre Sor</span>
         </button>
     </div>
@@ -304,7 +312,7 @@ html, body {
     </div>
 </div>
 </div>
-<div class="text-center text-slate-500/80 mt-2 text-xs sm:text-sm px-4"> Karar vermek için haber kartını <strong>sağa (GERÇEK)</strong> veya <strong>sola (SAHTE)</strong> doğru kaydırın.
+<div class="text-center text-slate-500/80 mt-3 text-xs sm:text-sm px-4"> Karar vermek için haber kartını <strong>sağa (GERÇEK)</strong> veya <strong>sola (SAHTE)</strong> doğru kaydırın.
 </div>
 </main>
 <nav class="sticky bottom-0 bg-white border-t border-gray-200 pb-safe z-20 shadow-top">
@@ -336,7 +344,7 @@ html, body {
 <p>1. Ekranda beliren haber kartını dikkatlice okuyun.</p>
 <p>2. Haberin <strong>GERÇEK</strong> olduğuna inanıyorsanız kartı <strong>SAĞA</strong> doğru kaydırın.</p>
 <p>3. Haberin <strong>SAHTE</strong> olduğuna inanıyorsanız kartı <strong>SOLA</strong> doğru kaydırın.</p>
-<p>4. Kafan karıştığında <strong class="text-red-600">"Editöre Sor"</strong> butonuna basarak bir ipucu alabilirsin (her soruda bir kere!).</p>
+<p>4. Kafan karıştığında <strong class="text-rose-500">"Editöre Sor"</strong> butonuna basarak bir ipucu alabilirsin (her soruda bir kere!).</p>
 <p>Haber okuryazarlığınızı test edin ve ne kadar yüksek puan alabileceğinizi görün!</p>
 </div>
 </div>
@@ -394,7 +402,8 @@ html, body {
 </footer>
 </div>
 
-<div id="editorHintModal" class="fixed inset-0 items-center justify-center p-4 hidden z-[60]"> <div class="editor-hint-content feedback-content-appear text-center">
+<div id="editorHintModal" class="fixed inset-0 items-center justify-center p-4 hidden z-[60]">
+    <div class="editor-hint-content feedback-content-appear text-center">
         <div class="flex justify-end mb-2">
              <button id="closeEditorHintBtn" class="btn-animated">
                 <span class="material-icons">close</span>
@@ -554,22 +563,16 @@ let timeUpAutoCloseTimeoutId = null;
 let profilePopupTimeoutId = null;
 
 
-// *** YENİ EKLENEN GÖRSEL ÖN YÜKLEME FONKSİYONLARI ***
 function preloadImage(url) {
     const img = new Image();
     img.src = url;
-    img.onload = () => {
-        console.log(`Başarıyla ön yüklendi: ${url}`);
-    };
-    img.onerror = (err) => {
-        console.warn(`Ön yükleme başarısız: ${url}`, err);
-    };
+    img.onload = () => { /* console.log(`Başarıyla ön yüklendi: ${url}`); */ };
+    img.onerror = (err) => { console.warn(`Ön yükleme başarısız: ${url}`, err); };
 }
 
 function startPreloadingNewsImages() {
-    console.log("Haber görselleri için ön yükleme başlatılıyor...");
     newsData.forEach(newsItem => {
-        if (newsItem.image && !newsItem.image.startsWith("data:image/")) { // Placeholder olmayan gerçek resim URL'lerini yükle
+        if (newsItem.image && !newsItem.image.startsWith("data:image/")) {
             preloadImage(newsItem.image);
         }
     });
@@ -579,7 +582,6 @@ function startPreloadingNewsImages() {
         }
     });
 }
-// *** GÖRSEL ÖN YÜKLEME FONKSİYONLARI BİTİŞ ***
 
 
 function saveGamePlayedState() { localStorage.setItem('fakeOrTakeGamePlayed_tr', JSON.stringify(gamePlayedAtLeastOnce)); }
@@ -636,7 +638,7 @@ function updateActiveNav(activeScreenId) {
 
 function showScreen(screen) {
     const allScreens = [homeScreenDiv, gameScreenDiv, feedbackScreen, resultsScreen];
-    const allPopups = [timeUpPopup, modal, aboutModal, editorHintModal]; // editorHintModal eklendi
+    const allPopups = [timeUpPopup, modal, aboutModal, editorHintModal];
     allScreens.forEach(s => { if (s) { s.classList.add('hidden'); s.classList.remove('flex'); }});
     allPopups.forEach(p => { if (p) { p.classList.add('hidden'); p.classList.remove('flex'); }});
 
@@ -647,7 +649,7 @@ function showScreen(screen) {
     } else {
         updateActiveNav(null);
     }
-    if (!allPopups.includes(screen) && screen !== modal && screen !== aboutModal && screen !== editorHintModal) { // editorHintModal eklendi
+    if (!allPopups.includes(screen) && screen !== modal && screen !== aboutModal && screen !== editorHintModal) {
         window.scrollTo(0,0);
     }
 }
@@ -673,9 +675,9 @@ function updateUIForNewQuestion() {
     if (animateInTimeoutId) { clearTimeout(animateInTimeoutId); animateInTimeoutId = null; }
     if (newsImage) newsImage.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
     if (newsImage && question.image) {
-        const img = new Image(); // Bu Image nesnesi sadece yükleme için, preloading'den farklı.
+        const img = new Image();
         img.onload = () => {
-            newsImage.src = question.image; // Tarayıcı önbellekteyse hızlıca alır
+            newsImage.src = question.image;
             animateInTimeoutId = setTimeout(animateCardIn, 30);
         };
         img.onerror = () => {
@@ -683,7 +685,7 @@ function updateUIForNewQuestion() {
             newsImage.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 4'%3E%3Crect width='100%' height='100%' fill='%23e2e8f0'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='0.5px' fill='%2394a3b8'%3ENo Image%3C/text%3E%3C/svg%3E";
             animateInTimeoutId = setTimeout(animateCardIn, 30);
         };
-        img.src = question.image; // Yüklemeyi tetikle
+        img.src = question.image;
     } else {
         newsImage.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 4'%3E%3Crect width='100%' height='100%' fill='%23e2e8f0'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='0.5px' fill='%2394a3b8'%3ENo Image%3C/text%3E%3C/svg%3E";
         animateInTimeoutId = setTimeout(animateCardIn, 30);
@@ -698,7 +700,6 @@ function updateUIForNewQuestion() {
     if(timerMinutesBox) timerMinutesBox.classList.remove('timer-box-pulse');
     if(timerSecondsBox) timerSecondsBox.classList.remove('timer-box-pulse');
 
-    // Editör butonu resetleme
     hintUsedForCurrentQuestion = false;
     askEditorBtn.classList.remove('disabled');
     askEditorBtnText.textContent = "Editöre Sor";
@@ -769,7 +770,7 @@ function handleAnswer(userChoiceIsReal) {
 
     if (timeUpAutoCloseTimeoutId) { clearTimeout(timeUpAutoCloseTimeoutId); timeUpAutoCloseTimeoutId = null; }
     if (timeUpPopup && !timeUpPopup.classList.contains('hidden')) { timeUpPopup.classList.add('hidden'); timeUpPopup.classList.remove('flex');}
-    if (editorHintModal && !editorHintModal.classList.contains('hidden')) { // Editör modalı açıksa kapat
+    if (editorHintModal && !editorHintModal.classList.contains('hidden')) {
         editorHintModal.classList.add('hidden');
         editorHintModal.classList.remove('flex');
     }
@@ -985,7 +986,6 @@ function resetGame() {
     if(timerSeconds) { timerSeconds.classList.remove('timer-pulse', 'text-red-500'); }
     if(timerMinutesBox) timerMinutesBox.classList.remove('timer-box-pulse');
     if(timerSecondsBox) timerSecondsBox.classList.remove('timer-box-pulse');
-    // Editör modalını gizle ve butonu resetle
     if (editorHintModal && !editorHintModal.classList.contains('hidden')) {
         editorHintModal.classList.add('hidden');
         editorHintModal.classList.remove('flex');
@@ -1112,7 +1112,6 @@ if (homeNavProfile && profileDisabledPopup) {
     });
 }
 
-// Editör İpucu Fonksiyonları
 function typeWriter(text, i, speed = 50) {
     if (i < text.length) {
         editorQuote.innerHTML = text.substring(0, i + 1);
@@ -1130,11 +1129,11 @@ function showEditorHint() {
     const editor = editors[currentEditorIndex % editors.length];
     let hintText = currentQuestionData.editorHint || editor.genericHints[Math.floor(Math.random() * editor.genericHints.length)];
 
-    editorIcon.src = editor.icon || "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"; // Placeholder if no icon
+    editorIcon.src = editor.icon || "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
     editorName.textContent = editor.name;
 
     if (typingTimeout) clearTimeout(typingTimeout);
-    editorQuote.innerHTML = ""; // Clear previous quote
+    editorQuote.innerHTML = "";
     editorQuote.classList.remove('typing-done');
 
     typeWriter(hintText, 0);
@@ -1147,7 +1146,7 @@ function showEditorHint() {
     askEditorBtnText.textContent = "Editör Meşgul!";
     askEditorBtn.disabled = true;
 
-    currentEditorIndex++; // Sonraki editöre geç
+    currentEditorIndex++;
 }
 
 if (askEditorBtn) {
@@ -1158,10 +1157,9 @@ if (closeEditorHintBtn) {
         editorHintModal.classList.add('hidden');
         editorHintModal.classList.remove('flex');
         if (typingTimeout) clearTimeout(typingTimeout);
-        editorQuote.classList.add('typing-done'); // Animasyonu durdur
+        editorQuote.classList.add('typing-done');
     });
 }
-// İpucu modalı dışına tıklayınca kapatma (isteğe bağlı)
 if (editorHintModal) {
     editorHintModal.addEventListener('click', (event) => {
         if (event.target === editorHintModal) {
@@ -1196,7 +1194,6 @@ if (!gamePlayedAtLeastOnce) {
 showScreen(homeScreenDiv);
 if(document.body) document.body.classList.remove('loading');
 
-// *** ANA SAYFA GÖSTERİLDİKTEN SONRA GÖRSEL ÖN YÜKLEMEYİ BAŞLAT ***
 if (newsData && newsData.length > 0) {
     startPreloadingNewsImages();
 }
