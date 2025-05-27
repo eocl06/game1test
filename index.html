@@ -41,6 +41,10 @@ body.loading #appRoot > .main-screen-view { opacity: 0; transform: scale(0.98); 
 .feedback-content-appear { animation: scaleUpSpring 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 @keyframes scaleUpSpring { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
 
+.editor-quote-appear { animation: fadeInRise 0.4s ease-out 0.1s forwards; opacity: 0; transform: translateY(10px); }
+@keyframes fadeInRise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+
 .timer-pulse { animation: pulseTimerWarn 1s infinite ease-in-out; }
 @keyframes pulseTimerWarn { 0%, 100% { transform: scale(1); color: inherit; } 50% { transform: scale(1.15); color: #ef4444; } }
 
@@ -175,20 +179,7 @@ html, body {
     color: #D1D5DB; /* Tailwind gray-300 */
     min-height: 60px; /* Metin için minimum yükseklik */
 }
-.editor-quote::after {
-    content: '▍';
-    animation: typing-cursor 0.7s infinite;
-    display: inline-block;
-    opacity: 1;
-}
-.editor-quote.typing-done::after {
-    display: none;
-}
 
-@keyframes typing-cursor {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-}
 #closeEditorHintBtn {
     background-color: #374151; /* Tailwind gray-700 */
     color: #D1D5DB; /* Tailwind gray-300 */
@@ -348,7 +339,7 @@ Karar vermek için haber kartını <strong>sağa (GERÇEK)</strong> veya <strong
 <p>1. Ekranda beliren haber kartını dikkatlice okuyun.</p>
 <p>2. Haberin <strong>GERÇEK</strong> olduğuna inanıyorsanız kartı <strong>SAĞA</strong> doğru kaydırın.</p>
 <p>3. Haberin <strong>SAHTE</strong> olduğuna inanıyorsanız kartı <strong>SOLA</strong> doğru kaydırın.</p>
-<p>4. Kafan karıştığında <strong class="text-rose-500">"Editöre Sor"</strong> butonuna basarak bir ipucu alabilirsin (her soruda bir kere!).</p>
+<p>4. Kafan karıştığında <strong class="text-rose-500">"Editöre Sor"</strong> butonuna basarak bir ipucu alabilirsin (oyun başına sadece bir kere!).</p>
 <p>Haber okuryazarlığınızı test edin ve ne kadar yüksek puan alabileceğinizi görün!</p>
 </div>
 </div>
@@ -526,30 +517,29 @@ const newsData = [
 
 // Editör Bilgileri
 const editors = [
-    { name: "Can", icon: "https://i.ibb.co/P91BqYc/can.png", genericHints: [
+    { name: "Can", icon: "https://i.ibb.co/1YLHqDmb/Chat-GPT-Image-May-28-2025-01-10-28-AM.png", genericHints: [
         "Hmm, bu biraz şaibeli duruyor sanki... Ama bazen en inanılmaz şeyler gerçek çıkabiliyor, dikkatli ol!",
         "Bu haber tam 'Yok artık!' dedirten cinsten. Acaba gerçekten yaşanmış olabilir mi, yoksa birilerinin hayal gücü mü devrede?",
         "Sosyal medyada görsem direkt 'fake' derdim ama bazen hayat kurgudan daha garip olabiliyor. İyi düşün!"
     ]},
-    { name: "Cenk", icon: "https://i.ibb.co/wSPc1fW/cenk.png", genericHints: [
+    { name: "Cenk", icon: "https://i.ibb.co/nqRTTb4M/Chat-GPT-Image-May-28-2025-01-10-34-AM.png", genericHints: [
         "Detaylara dikkat et. Haberdeki küçük bir ayrıntı gerçeği ele verebilir ya da tam tersi, seni yanıltabilir.",
         "Bu tür haberler genelde ya çok komik ya da çok şaşırtıcı olur. Acaba bu hangisi ve gerçeklik payı ne kadar?",
         "Benzer haberler daha önce çıktı mı diye bir düşün. Bazen aynı 'şaka' farklı versiyonlarla tekrar gündeme gelebiliyor."
     ]},
-    { name: "Eylül", icon: "https://i.ibb.co/rGCNn0b2/image.png", genericHints: [
+    { name: "Eylül", icon: "https://i.ibb.co/gMGS7wGj/Chat-GPT-Image-May-28-2025-01-12-30-AM.png", genericHints: [
         "Kaynak önemli tabii ama bazen en güvenilir kaynaklar bile 'tıklanma' uğruna ilginç başlıklar atabiliyor. Acaba bu da onlardan mı?",
         "Olayın geçtiği yer ve zaman mantıklı mı? Bazı haberler sırf bu yüzden bile kendini ele verebilir.",
         "Eğer gerçekse kesin konuşulurdu, eğer sahteyse de iyi bir espri malzemesi olurdu. Sen ne dersin?"
     ]},
-    { name: "Melis", icon: "https://i.ibb.co/YDBxHnn/melis.png", genericHints: [
+    { name: "Melis", icon: "https://i.ibb.co/93TX8yL0/Chat-GPT-Image-May-28-2025-01-10-32-AM.png", genericHints: [
         "Bu haberin bir benzerini daha önce duymuş gibi miyim? Yoksa tamamen orijinal bir 'vaka' mı söz konusu?",
         "İçindeki insan unsuruna odaklan. İnsanların yapabilecekleri bazen sınırsız olabiliyor, hem iyi hem de 'tuhaf' anlamda.",
         "Eğer bu sponsorlu bir içerik olsaydı, hangi mesajı vermeye çalışırdı? Bu açıdan düşünmek de bir ipucu olabilir."
     ]}
 ];
 let currentEditorIndex = 0;
-let hintUsedForCurrentQuestion = false;
-let typingTimeout;
+let editorHintUsedThisGame = false; // Global flag for hint usage per game
 
 
 let currentQuestionIndex = 0; let score = 0; let currentStreak = 0;
@@ -704,11 +694,16 @@ function updateUIForNewQuestion() {
     if(timerMinutesBox) timerMinutesBox.classList.remove('timer-box-pulse');
     if(timerSecondsBox) timerSecondsBox.classList.remove('timer-box-pulse');
 
-    hintUsedForCurrentQuestion = false;
-    askEditorBtn.classList.remove('disabled');
-    askEditorBtnText.textContent = "Editöre Sor";
-    askEditorBtn.disabled = false;
-
+    // Update Ask Editor button based on game-wide usage
+    if (editorHintUsedThisGame) {
+        askEditorBtn.classList.add('disabled');
+        askEditorBtnText.textContent = "Editör Meşgul!";
+        askEditorBtn.disabled = true;
+    } else {
+        askEditorBtn.classList.remove('disabled');
+        askEditorBtnText.textContent = "Editöre Sor";
+        askEditorBtn.disabled = false;
+    }
 }
 
 function startTimer() {
@@ -817,13 +812,21 @@ if(feedbackNextButton) feedbackNextButton.addEventListener('click', proceedToNex
 if(closeFeedbackBtn) closeFeedbackBtn.addEventListener('click', proceedToNextStep);
 
 function startGame() {
-    if (!scoreDisplay || !totalQuestionsDisplay || !progressBar || !streakCounter) { console.error("Oyun başlatma için UI elementleri eksik"); return; }
+    if (!scoreDisplay || !totalQuestionsDisplay || !progressBar || !streakCounter || !askEditorBtn || !askEditorBtnText) { console.error("Oyun başlatma için UI elementleri eksik"); return; }
     gameStartTime = Date.now();
     currentQuestionIndex = 0; score = 0; currentStreak = 0;
+    editorHintUsedThisGame = false; // Reset hint usage for the new game
+
     scoreDisplay.textContent = score;
     streakCounter.textContent = currentStreak;
     totalQuestionsDisplay.textContent = newsData.length;
     progressBar.style.width = '0%';
+
+    // Ensure Ask Editor button is reset
+    askEditorBtn.classList.remove('disabled');
+    askEditorBtnText.textContent = "Editöre Sor";
+    askEditorBtn.disabled = false;
+
     showScreen(gameScreenDiv);
     updateUIForNewQuestion();
     startTimer();
@@ -994,17 +997,13 @@ function resetGame() {
         editorHintModal.classList.add('hidden');
         editorHintModal.classList.remove('flex');
     }
-    if (askEditorBtn && askEditorBtnText) {
-        hintUsedForCurrentQuestion = false;
-        askEditorBtn.classList.remove('disabled');
-        askEditorBtnText.textContent = "Editöre Sor";
-        askEditorBtn.disabled = false;
-    }
+    // No need to reset askEditorBtn here as it's handled by startGame for a new game
+    // and should remain disabled if navigating away mid-game after using hint.
 }
 function navigateToHome() { resetGame(); showScreen(homeScreenDiv); }
 
 function navigateToResults() {
-    resetGame();
+    resetGame(); // This will close modals like editor hint if open
     if (!gamePlayedAtLeastOnce) {
         if (finalScoreValue) finalScoreValue.textContent = "0/0";
         if (timeTakenValue) timeTakenValue.textContent = "-";
@@ -1012,9 +1011,14 @@ function navigateToResults() {
         let totalQDisplay = newsData && newsData.length > 0 ? newsData.length : "X";
         if (highScoreDisplay) highScoreDisplay.textContent = `${hs}/${totalQDisplay}`;
     } else {
-        if (finalScoreValue) finalScoreValue.textContent = `${score}/${newsData.length}`;
+        // Scores are already set by endGame if a game was played
+        if (finalScoreValue && typeof score !== 'undefined' && newsData && newsData.length > 0) {
+             finalScoreValue.textContent = `${score}/${newsData.length}`;
+        }
         let hs = parseInt(localStorage.getItem('fakeOrTakeHighScore_tr')) || 0;
-        if (highScoreDisplay) highScoreDisplay.textContent = `${hs}/${newsData.length}`;
+        if (highScoreDisplay && newsData && newsData.length > 0) {
+            highScoreDisplay.textContent = `${hs}/${newsData.length}`;
+        }
     }
     populateLeaderboard();
     showScreen(resultsScreen);
@@ -1116,18 +1120,8 @@ if (homeNavProfile && profileDisabledPopup) {
     });
 }
 
-function typeWriter(text, i, speed = 25) {
-    if (i < text.length) {
-        editorQuote.innerHTML = text.substring(0, i + 1);
-        editorQuote.classList.remove('typing-done');
-        typingTimeout = setTimeout(() => typeWriter(text, i + 1, speed), speed);
-    } else {
-        editorQuote.classList.add('typing-done');
-    }
-}
-
 function showEditorHint() {
-    if (hintUsedForCurrentQuestion || currentQuestionIndex >= newsData.length) return;
+    if (editorHintUsedThisGame || currentQuestionIndex >= newsData.length) return;
 
     const currentQuestionData = newsData[currentQuestionIndex];
     const editor = editors[currentEditorIndex % editors.length];
@@ -1136,18 +1130,17 @@ function showEditorHint() {
     editorIcon.src = editor.icon || "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
     editorName.textContent = editor.name;
 
-    if (typingTimeout) clearTimeout(typingTimeout);
-    editorQuote.innerHTML = "";
-    editorQuote.classList.remove('typing-done');
-
-    typeWriter(hintText, 0);
+    editorQuote.innerHTML = hintText; // Directly set the text
+    editorQuote.classList.remove('editor-quote-appear'); // Remove class to re-trigger animation
+    void editorQuote.offsetWidth; // Trigger reflow
+    editorQuote.classList.add('editor-quote-appear'); // Add class to start animation
 
     editorHintModal.classList.remove('hidden');
     editorHintModal.classList.add('flex');
 
-    hintUsedForCurrentQuestion = true;
+    editorHintUsedThisGame = true; // Mark hint as used for the game
     askEditorBtn.classList.add('disabled');
-    askEditorBtnText.textContent = "Editör Meşgul!";
+    askEditorBtnText.textContent = "İpucu Kullanıldı";
     askEditorBtn.disabled = true;
 
     currentEditorIndex++;
@@ -1160,8 +1153,7 @@ if (closeEditorHintBtn) {
     closeEditorHintBtn.addEventListener('click', () => {
         editorHintModal.classList.add('hidden');
         editorHintModal.classList.remove('flex');
-        if (typingTimeout) clearTimeout(typingTimeout);
-        editorQuote.classList.add('typing-done');
+        editorQuote.classList.remove('editor-quote-appear'); // Reset animation class
     });
 }
 if (editorHintModal) {
@@ -1169,8 +1161,7 @@ if (editorHintModal) {
         if (event.target === editorHintModal) {
             editorHintModal.classList.add('hidden');
             editorHintModal.classList.remove('flex');
-             if (typingTimeout) clearTimeout(typingTimeout);
-             editorQuote.classList.add('typing-done');
+            editorQuote.classList.remove('editor-quote-appear'); // Reset animation class
         }
     });
 }
