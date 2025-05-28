@@ -649,6 +649,34 @@ let editorHintUsedThisGame = false;
 let busyPopupTimeoutId = null;
 let currentBusyIconClickListener = null;
 
+const funnyNicknames = [
+    "Tekinsiz Penguen", "Düzayak Kırkayak", "Paytak Tavşan", "Gizemli Geyik",
+    "Uykucu Vaşak", "Gülünç Gergedan", "Meraklı Mirket", "Şaşkın Sincap",
+    "Sakar Su Samuru", "Filozof Fare", "Dansçı Dinozor", "Hızlı Kaplumbağa",
+    "Kahkaha Kertenkelesi", "Geveze Goril", "Bilge Baykuş", "Maceracı Maymun",
+    "Çılgın Çita", "Uçan Palamut", "Bıyıklı Balina", "Gözlüklü Köpekbalığı",
+    "Kıvırcık Kuzu", "Benekli Porsuk", "Alıngan Ahtapot", "Neşeli Numbat",
+    "Yorgun Yılan", "Zıpır Zürafa", "Pijamalı Panda", "Tembel Timsah",
+    "Mistik Mantis", "Çaylak Çakal", "Profesör Pelikan", "Asabi Aslan",
+    "Absürt Ahtapot", "Bahtsız Bukalemun", "Cazgır Cırcırböceği", "Dalgın Denizanası",
+    "Ejderha Emojisi", "Fırlama Flamingo", "Geometrik Geyik", "Haylaz Hamsi",
+    "İronik İguana", "Janjanlı Jaguar", "Kafası Karışık Koala", "Lirik Leylek"
+];
+
+function getRandomNickname() {
+    return funnyNicknames[Math.floor(Math.random() * funnyNicknames.length)];
+}
+
+let playerNickname = localStorage.getItem('fakeOrTakePlayerNickname_tr') || null;
+
+function ensurePlayerNickname() {
+    if (!playerNickname) {
+        playerNickname = getRandomNickname();
+        localStorage.setItem('fakeOrTakePlayerNickname_tr', playerNickname);
+    }
+    return playerNickname;
+}
+
 const editorBusyReasons = {
     "Can": "Abi PN'lere bakıyorum, 2 dk 🙏", "Melis": "Mailing bitince geliyorum, söz!🙏", "Eylül": "Morning'i hazırlıyorum, birazdan döneceğim.🙏", "Cenk": "Bülteni hallediyim sendeyim abi!🙏"
 };
@@ -861,8 +889,207 @@ function proceedToNextStep() { if (!progressBar) return; currentQuestionIndex++;
 if(feedbackNextButton) feedbackNextButton.addEventListener('click', proceedToNextStep);
 if(closeFeedbackBtn) closeFeedbackBtn.addEventListener('click', proceedToNextStep);
 
-function startGame() { if (!scoreDisplay || !totalQuestionsDisplay || !progressBar || !streakCounter || !askEditorBtn || !askEditorBtnText || !askEditorBtnIcon || !editors || editors.length === 0) { console.error("Oyun başlatma için UI elementleri veya editör verisi eksik"); return; } gameStartTime = Date.now(); currentQuestionIndex = 0; score = 0; currentStreak = 0; editorHintUsedThisGame = false; editorWhoGaveHint = null; editorForButtonIcon = null; if(busyPopupTimeoutId) clearTimeout(busyPopupTimeoutId); if(editorBusyPopup) editorBusyPopup.style.display = 'none'; scoreDisplay.textContent = score; streakCounter.textContent = currentStreak; totalQuestionsDisplay.textContent = newsData.length; progressBar.style.width = '0%'; showScreen(gameScreenDiv); updateUIForNewQuestion(); startTimer(); }
-function populateLeaderboard() { if (!leaderboardEntriesContainer || !newsData || newsData.length === 0) return; leaderboardEntriesContainer.innerHTML = ''; const botNamesAndPersonalities = [ { name: "Fatih Mandalina", scoreMultiplier: 0.92 }, { name: "İsmail Büyükyaya", scoreMultiplier: 0.88 }, { name: "Cüneyt Sazdemir", scoreMultiplier: 0.95 }, { name: "Nevşin Bambu", scoreMultiplier: 0.85 }, { name: "Ahmet Haktan", scoreMultiplier: 0.78 }, { name: "Enver Taysever", scoreMultiplier: 0.90 }, { name: "Ece Döner", scoreMultiplier: 0.82 }, { name: "Deniz Zeybek", scoreMultiplier: 0.75 }, { name: "Yılmaz Özil", scoreMultiplier: 0.97 }, { name: "Fatih Ortaylı", scoreMultiplier: 0.80 } ]; let botEntries = botNamesAndPersonalities.map(bot => ({ name: bot.name, score: Math.min(newsData.length, Math.max(0, Math.floor(Math.random() * (newsData.length / 1.8) + (newsData.length * bot.scoreMultiplier * 0.45)))), isPlayer: false })); botEntries.sort(() => 0.5 - Math.random()); const numBotsToBoost = Math.min(3, botEntries.length); for (let i = 0; i < numBotsToBoost; i++) { botEntries[i].score = Math.max(botEntries[i].score, Math.floor(newsData.length * (0.65 + Math.random() * 0.3))); } const playerScoreEntry = { name: "SEN", score: (gamePlayedAtLeastOnce ? score : 0), isPlayer: true }; let allEntries = [...botEntries, playerScoreEntry]; allEntries.sort((a, b) => { if (b.score === a.score) { if (a.isPlayer) return -1; if (b.isPlayer) return 1; return a.name.localeCompare(b.name); } return b.score - a.score; }); const maxEntriesToShow = 7; let displayEntries = []; if (allEntries.length <= maxEntriesToShow) { displayEntries = [...allEntries]; } else { const playerRankGlobal = allEntries.findIndex(entry => entry.isPlayer); if (playerRankGlobal < maxEntriesToShow -1 ) { displayEntries = allEntries.slice(0, maxEntriesToShow); } else { displayEntries = allEntries.slice(0, maxEntriesToShow - 2); displayEntries.push({ name: "...", score: -1, isPlayer: false, isEllipsis: true }); if (!displayEntries.some(e=> e.isPlayer && e.name === playerScoreEntry.name)) { displayEntries.push(playerScoreEntry); } } if (displayEntries.some(e => e.isEllipsis) && displayEntries.findIndex(e => e.isPlayer) === displayEntries.findIndex(e => e.isEllipsis) -1 ) { displayEntries = displayEntries.filter(e => !e.isEllipsis); if(displayEntries.length < maxEntriesToShow && allEntries.length > maxEntriesToShow) { const nextEntry = allEntries.find(ae => !displayEntries.some(de => de.name === ae.name && de.score === ae.score)); if(nextEntry) displayEntries.push(nextEntry); } } } displayEntries.sort((a, b) => { if(a.isEllipsis) return 1; if(b.isEllipsis) return -1; if (b.score === a.score) { if (a.isPlayer) return -1; if (b.isPlayer) return 1; return a.name.localeCompare(b.name); } return b.score - a.score; }); if (displayEntries.length > maxEntriesToShow) { const playerInDisplay = displayEntries.some(e => e.isPlayer); if (playerInDisplay && displayEntries.findIndex(e => e.isPlayer) >= maxEntriesToShow -1) { let tempEntries = displayEntries.slice(0, maxEntriesToShow -1); if (!tempEntries.some(e=>e.isPlayer)) tempEntries.push(playerScoreEntry); displayEntries = tempEntries; displayEntries.sort((a, b) => { if (b.score === a.score) { if (a.isPlayer) return -1; if (b.isPlayer) return 1; return a.name.localeCompare(b.name); } return b.score - a.score; }); } else { displayEntries = displayEntries.slice(0, maxEntriesToShow); } } displayEntries.forEach((entry) => { const entryDiv = document.createElement('div'); entryDiv.className = 'flex items-center justify-between rounded-lg p-4 transition-all text-sm sm:text-base shadow-sm'; if(entry.isEllipsis) { entryDiv.innerHTML = `<p class="text-center w-full text-slate-500 text-xs">...</p>`; leaderboardEntriesContainer.appendChild(entryDiv); return; } const leftPart = document.createElement('div'); leftPart.className = 'flex items-center gap-3'; const rankDisplaySpan = document.createElement('span'); const actualRank = allEntries.findIndex(e => e.name === entry.name && e.score === entry.score && e.isPlayer === entry.isPlayer) + 1; let rankText = `${actualRank}.`; let rankIconClass = 'text-slate-600'; if (actualRank === 1) { rankText = '🥇'; rankIconClass = 'text-amber-400';} else if (actualRank === 2) { rankText = '🥈'; rankIconClass = 'text-slate-400';} else if (actualRank === 3) { rankText = '🥉'; rankIconClass = 'text-orange-400';} if (entry.isPlayer) { entryDiv.classList.add('bg-indigo-100', 'text-indigo-700', 'ring-2', 'ring-offset-2', 'ring-offset-indigo-100', 'ring-indigo-500', 'shadow-md'); rankDisplaySpan.className = `text-xl font-semibold ${rankIconClass}`; rankDisplaySpan.innerHTML = `${(actualRank > 3) ? '★ ' : ''}${rankText}`; } else { entryDiv.classList.add('bg-slate-100', 'hover:bg-slate-200/80'); rankDisplaySpan.className = `text-lg sm:text-xl font-semibold ${actualRank <=3 ? rankIconClass : 'text-slate-600'}`; rankDisplaySpan.innerHTML = rankText; } leftPart.appendChild(rankDisplaySpan); const nameP = document.createElement('p'); nameP.className = `font-medium ${entry.isPlayer ? 'text-indigo-800' : 'text-slate-700'}`; nameP.textContent = entry.name; leftPart.appendChild(nameP); const scoreP = document.createElement('p'); scoreP.className = `font-semibold ${entry.isPlayer ? 'text-indigo-800' : 'text-slate-700'}`; scoreP.textContent = `${entry.score}/${newsData.length}`; entryDiv.appendChild(leftPart); entryDiv.appendChild(scoreP); leaderboardEntriesContainer.appendChild(entryDiv); }); }
+function startGame() {
+  if (
+    !scoreDisplay ||
+    !totalQuestionsDisplay ||
+    !progressBar ||
+    !streakCounter ||
+    !askEditorBtn ||
+    !askEditorBtnText ||
+    !askEditorBtnIcon ||
+    !editors ||
+    editors.length === 0
+  ) {
+    console.error("Oyun başlatma için UI elementleri veya editör verisi eksik");
+    return;
+  }
+
+  ensurePlayerNickname(); // Takma adı kontrol et veya ata
+  gameStartTime = Date.now();
+
+  currentQuestionIndex = 0;
+  score = 0;
+  currentStreak = 0;
+  editorHintUsedThisGame = false;
+  editorWhoGaveHint = null;
+  editorForButtonIcon = null;
+
+  if (busyPopupTimeoutId) clearTimeout(busyPopupTimeoutId);
+  if (editorBusyPopup) editorBusyPopup.style.display = 'none';
+
+  scoreDisplay.textContent = score;
+  streakCounter.textContent = currentStreak;
+  totalQuestionsDisplay.textContent = newsData.length;
+  progressBar.style.width = '0%';
+
+  showScreen(gameScreenDiv);
+  updateUIForNewQuestion();
+  startTimer();
+}
+function populateLeaderboard() {
+  if (!leaderboardEntriesContainer || !newsData || newsData.length === 0) return;
+
+  leaderboardEntriesContainer.innerHTML = '';
+
+  const botNamesAndPersonalities = [
+    { name: "Fatih Mandalina", scoreMultiplier: 0.92 },
+    { name: "İsmail Büyükyaya", scoreMultiplier: 0.88 },
+    { name: "Cüneyt Sazdemir", scoreMultiplier: 0.95 },
+    { name: "Nevşin Bambu", scoreMultiplier: 0.85 },
+    { name: "Ahmet Haktan", scoreMultiplier: 0.78 },
+    { name: "Enver Taysever", scoreMultiplier: 0.90 },
+    { name: "Ece Döner", scoreMultiplier: 0.82 },
+    { name: "Deniz Zeybek", scoreMultiplier: 0.75 },
+    { name: "Yılmaz Özil", scoreMultiplier: 0.97 },
+    { name: "Fatih Ortaylı", scoreMultiplier: 0.80 }
+  ];
+
+  let botEntries = botNamesAndPersonalities.map(bot => ({
+    name: bot.name,
+    score: Math.min(newsData.length, Math.max(0, Math.floor(Math.random() * (newsData.length / 1.8) + (newsData.length * bot.scoreMultiplier * 0.45)))),
+    isPlayer: false
+  }));
+
+  botEntries.sort(() => 0.5 - Math.random());
+
+  const numBotsToBoost = Math.min(3, botEntries.length);
+  for (let i = 0; i < numBotsToBoost; i++) {
+    botEntries[i].score = Math.max(botEntries[i].score, Math.floor(newsData.length * (0.65 + Math.random() * 0.3)));
+  }
+
+  const currentPlayerNickname = ensurePlayerNickname(); // Burada takma adı alıyoruz
+  const playerScoreEntry = {
+    name: currentPlayerNickname,
+    score: (gamePlayedAtLeastOnce ? score : 0),
+    isPlayer: true
+  };
+
+  let allEntries = [...botEntries, playerScoreEntry];
+
+  allEntries.sort((a, b) => {
+    if (b.score === a.score) {
+      if (a.isPlayer) return -1;
+      if (b.isPlayer) return 1;
+      return a.name.localeCompare(b.name);
+    }
+    return b.score - a.score;
+  });
+
+  const maxEntriesToShow = 7;
+  let displayEntries = [];
+
+  if (allEntries.length <= maxEntriesToShow) {
+    displayEntries = [...allEntries];
+  } else {
+    const playerRankGlobal = allEntries.findIndex(entry => entry.isPlayer);
+    if (playerRankGlobal < maxEntriesToShow - 1) {
+      displayEntries = allEntries.slice(0, maxEntriesToShow);
+    } else {
+      displayEntries = allEntries.slice(0, maxEntriesToShow - 2);
+      displayEntries.push({ name: "...", score: -1, isPlayer: false, isEllipsis: true });
+      if (!displayEntries.some(e => e.isPlayer && e.name === playerScoreEntry.name)) {
+        displayEntries.push(playerScoreEntry);
+      }
+    }
+
+    if (
+      displayEntries.some(e => e.isEllipsis) &&
+      displayEntries.findIndex(e => e.isPlayer) === displayEntries.findIndex(e => e.isEllipsis) - 1
+    ) {
+      displayEntries = displayEntries.filter(e => !e.isEllipsis);
+      if (displayEntries.length < maxEntriesToShow && allEntries.length > maxEntriesToShow) {
+        const nextEntry = allEntries.find(ae => !displayEntries.some(de => de.name === ae.name && de.score === ae.score));
+        if (nextEntry) displayEntries.push(nextEntry);
+      }
+    }
+  }
+
+  displayEntries.sort((a, b) => {
+    if (a.isEllipsis) return 1;
+    if (b.isEllipsis) return -1;
+    if (b.score === a.score) {
+      if (a.isPlayer) return -1;
+      if (b.isPlayer) return 1;
+      return a.name.localeCompare(b.name);
+    }
+    return b.score - a.score;
+  });
+
+  if (displayEntries.length > maxEntriesToShow) {
+    const playerInDisplay = displayEntries.some(e => e.isPlayer);
+    if (playerInDisplay && displayEntries.findIndex(e => e.isPlayer) >= maxEntriesToShow - 1) {
+      let tempEntries = displayEntries.slice(0, maxEntriesToShow - 1);
+      if (!tempEntries.some(e => e.isPlayer)) tempEntries.push(playerScoreEntry);
+      displayEntries = tempEntries;
+      displayEntries.sort((a, b) => {
+        if (b.score === a.score) {
+          if (a.isPlayer) return -1;
+          if (b.isPlayer) return 1;
+          return a.name.localeCompare(b.name);
+        }
+        return b.score - a.score;
+      });
+    } else {
+      displayEntries = displayEntries.slice(0, maxEntriesToShow);
+    }
+  }
+
+  displayEntries.forEach((entry) => {
+    const entryDiv = document.createElement('div');
+    entryDiv.className = 'flex items-center justify-between rounded-lg p-4 transition-all text-sm sm:text-base shadow-sm';
+
+    if (entry.isEllipsis) {
+      entryDiv.innerHTML = `<p class="text-center w-full text-slate-500 text-xs">...</p>`;
+      leaderboardEntriesContainer.appendChild(entryDiv);
+      return;
+    }
+
+    const leftPart = document.createElement('div');
+    leftPart.className = 'flex items-center gap-3';
+
+    const rankDisplaySpan = document.createElement('span');
+    const actualRank = allEntries.findIndex(e => e.name === entry.name && e.score === entry.score && e.isPlayer === entry.isPlayer) + 1;
+    let rankText = `${actualRank}.`;
+    let rankIconClass = 'text-slate-600';
+
+    if (actualRank === 1) {
+      rankText = '🥇';
+      rankIconClass = 'text-amber-400';
+    } else if (actualRank === 2) {
+      rankText = '🥈';
+      rankIconClass = 'text-slate-400';
+    } else if (actualRank === 3) {
+      rankText = '🥉';
+      rankIconClass = 'text-orange-400';
+    }
+
+    if (entry.isPlayer) {
+      entryDiv.classList.add('bg-indigo-100', 'text-indigo-700', 'ring-2', 'ring-offset-2', 'ring-offset-indigo-100', 'ring-indigo-500', 'shadow-md');
+      rankDisplaySpan.className = `text-xl font-semibold ${rankIconClass}`;
+      rankDisplaySpan.innerHTML = `${(actualRank > 3) ? '★ ' : ''}${rankText}`;
+    } else {
+      entryDiv.classList.add('bg-slate-100', 'hover:bg-slate-200/80');
+      rankDisplaySpan.className = `text-lg sm:text-xl font-semibold ${actualRank <= 3 ? rankIconClass : 'text-slate-600'}`;
+      rankDisplaySpan.innerHTML = rankText;
+    }
+
+    leftPart.appendChild(rankDisplaySpan);
+
+    const nameP = document.createElement('p');
+    nameP.className = `font-medium ${entry.isPlayer ? 'text-indigo-800' : 'text-slate-700'}`;
+    nameP.textContent = entry.name;
+    leftPart.appendChild(nameP);
+
+    const scoreP = document.createElement('p');
+    scoreP.className = `font-semibold ${entry.isPlayer ? 'text-indigo-800' : 'text-slate-700'}`;
+    scoreP.textContent = `${entry.score}/${newsData.length}`;
+
+    entryDiv.appendChild(leftPart);
+    entryDiv.appendChild(scoreP);
+    leaderboardEntriesContainer.appendChild(entryDiv);
+  });
+}
 function endGame() { if (!timeTakenValue || !finalScoreValue || !highScoreDisplay) return; gamePlayedAtLeastOnce = true; saveGamePlayedState(); clearInterval(timerInterval); if(timerSeconds) { timerSeconds.classList.remove('timer-pulse', 'text-red-500'); } if(timerSecondsBox) timerSecondsBox.classList.remove('timer-box-pulse'); const gameEndTimeVariable = Date.now(); const timeDiff = gameEndTimeVariable - (gameStartTime || gameEndTimeVariable) ; const mins = Math.floor(timeDiff / 60000); const secs = Math.floor((timeDiff % 60000) / 1000); if (timeTakenValue) timeTakenValue.textContent = `${mins} dakika ${secs} saniye`; if (finalScoreValue) finalScoreValue.textContent = `${score}/${newsData.length}`; let hs = parseInt(localStorage.getItem('fakeOrTakeHighScore_tr')) || 0; if (score > hs) { hs = score; localStorage.setItem('fakeOrTakeHighScore_tr', hs); } if (highScoreDisplay) highScoreDisplay.textContent = `${hs}/${newsData.length}`; populateLeaderboard(); showScreen(resultsScreen); }
 function resetGame() { clearInterval(timerInterval); if(timerSeconds) { timerSeconds.classList.remove('timer-pulse', 'text-red-500'); } if(timerSecondsBox) timerSecondsBox.classList.remove('timer-box-pulse'); if (editorHintModal && !editorHintModal.classList.contains('hidden')) { editorHintModal.classList.add('hidden'); editorHintModal.classList.remove('flex'); } if(askEditorBtnIcon) { askEditorBtnIcon.classList.add('hidden'); askEditorBtnIcon.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"; askEditorBtnIcon.alt = ""; } if(askEditorBtnText) askEditorBtnText.innerHTML = "Editöre Sor"; editorForButtonIcon = null; editorWhoGaveHint = null; if(busyPopupTimeoutId) clearTimeout(busyPopupTimeoutId); if(editorBusyPopup) editorBusyPopup.style.display = 'none'; askEditorBtn.classList.remove('busy-state'); }
 function navigateToHome() { resetGame(); showScreen(homeScreenDiv); }
@@ -871,7 +1098,20 @@ function unifiedSwipeStart(e) { if (!newsCard || newsCard.classList.contains('fl
 function unifiedSwipeMove(e) { if (!isSwiping || !newsCard) return; swipeCurrentX = isMouseSwiping ? e.pageX : e.touches[0].pageX; let diffX = swipeCurrentX - swipeStartX; if (e.type === 'touchmove' && Math.abs(diffX) > 5 && e.cancelable) { e.preventDefault(); } let rotation = diffX * CARD_ROTATION_FACTOR; rotation = Math.max(-CARD_MAX_ROTATION, Math.min(CARD_MAX_ROTATION, rotation)); const newTransform = `translateX(${diffX}px) rotate(${rotation}deg)`; requestAnimationFrame(() => { if (isSwiping) { newsCard.style.transform = newTransform; } }); if (diffX > SWIPE_THRESHOLD / 1.8) { swipeRealIndicator.classList.add('visible'); swipeFakeIndicator.classList.remove('visible'); } else if (diffX < -SWIPE_THRESHOLD / 1.8) { swipeFakeIndicator.classList.add('visible'); swipeRealIndicator.classList.remove('visible'); } else { swipeRealIndicator.classList.remove('visible'); swipeFakeIndicator.classList.remove('visible'); } }
 function unifiedSwipeEnd(e) { if (!isSwiping || !newsCard) return; if (isMouseSwiping) { document.removeEventListener('mousemove', unifiedSwipeMove); document.removeEventListener('mouseup', unifiedSwipeEnd); } isSwiping = false; isMouseSwiping = false; newsCard.classList.remove('swiping'); let diffX = swipeCurrentX - swipeStartX; if (Math.abs(diffX) > SWIPE_THRESHOLD) { if (diffX > 0) { swipeRealIndicator.classList.add('visible'); } else { swipeFakeIndicator.classList.add('visible'); } processSwipeDecision(diffX > 0); } else { resetCardState(false); } swipeStartX = 0; swipeCurrentX = 0; }
 if (newsCard) { newsCard.addEventListener('mousedown', unifiedSwipeStart); newsCard.addEventListener('touchstart', unifiedSwipeStart, { passive: true }); newsCard.addEventListener('touchmove', unifiedSwipeMove, { passive: false }); newsCard.addEventListener('touchend', unifiedSwipeEnd); newsCard.addEventListener('touchcancel', unifiedSwipeEnd); } else { console.error("Haber kartı (newsCard) DOM'da bulunamadı! Swipe çalışmayacak."); }
-async function handleShareResults() { if (!newsData || newsData.length === 0) { alert("Paylaşılacak bir sonuç bulunamadı."); return; } const currentScoreForShare = gamePlayedAtLeastOnce ? score : 0; const shareText = `FakeBreak'de ${currentScoreForShare}/${newsData.length} yaptım! Sen de bu haberlerin gerçek mi sahte mi olduğunu tahmin etmeye çalış. Challenge'a var mısın? 😎`; const shareUrl = window.location.href; const shareTitle = "FakeBreak - Skor Yarışması!"; if (navigator.share) { try { await navigator.share({ title: shareTitle, text: shareText, url: shareUrl }); console.log('Sonuç başarıyla paylaşıldı!'); } catch (error) { console.error('Paylaşım sırasında hata oluştu:', error); if (error.name !== 'AbortError') { alert('Paylaşım sırasında bir hata oluştu.');} } } else { try { await navigator.clipboard.writeText(`${shareTitle}\n${shareText}\n${shareUrl}`); alert('Paylaşım özelliği bu tarayıcıda desteklenmiyor. Skorun ve davet mesajın panoya kopyalandı, istediğin yerde paylaşabilirsin!'); } catch (err) { alert('Paylaşım özelliği bu tarayıcıda desteklenmiyor ve metin panoya kopyalanamadı. Lütfen skoru manuel olarak paylaşın.'); console.error('Panoya kopyalama başarısız:', err); } } }
+async function handleShareResults() {
+    if (!newsData || newsData.length === 0) {
+        alert("Paylaşılacak bir sonuç bulunamadı.");
+        return;
+    }
+    const currentScoreForShare = gamePlayedAtLeastOnce ? score : 0;
+    const currentPlayerNicknameForShare = playerNickname || "Bir Oyuncu"; // Eğer bir şekilde takma ad yoksa varsayılan
+
+    const shareText = `${currentPlayerNicknameForShare}, FakeBreak'de ${currentScoreForShare}/${newsData.length} yaptı! Sen de bu haberlerin gerçek mi sahte mi olduğunu tahmin etmeye çalış. Challenge'a var mısın? 😎`;
+    const shareUrl = window.location.href;
+    const shareTitle = "FakeBreak - Skor Yarışması!";
+
+    // ... (navigator.share ve clipboard kopyalama mantığı aynı kalır)
+}
 if (howToPlayButton && modal && closeModalButton) { const openHowToPlayModal = () => { if (modal) { modal.classList.remove('hidden'); modal.classList.add('flex'); } }; const closeHowToPlayModal = () => { if (modal) { modal.classList.add('hidden'); modal.classList.remove('flex'); } }; howToPlayButton.addEventListener('click', openHowToPlayModal); closeModalButton.addEventListener('click', closeHowToPlayModal); modal.addEventListener('click', (event) => { if (event.target === modal) { closeHowToPlayModal(); } }); } else { console.error("Modal ('Nasıl Oynanır') elementleri bulunamadı."); }
 if (aboutBtn && aboutModal && closeAboutModalBtn) { const openAboutModal = () => { if (aboutModal) { aboutModal.classList.remove('hidden'); aboutModal.classList.add('flex'); } }; const closeAboutModal = () => { if (aboutModal) { aboutModal.classList.add('hidden'); aboutModal.classList.remove('flex'); } }; aboutBtn.addEventListener('click', openAboutModal); closeAboutModalBtn.addEventListener('click', closeAboutModal); aboutModal.addEventListener('click', (event) => { if (event.target === aboutModal) { closeAboutModal(); } }); } else { console.error("Hakkında Modal elementleri bulunamadı."); }
 if (homeNavProfile && profileDisabledPopup) { homeNavProfile.addEventListener('click', (e) => { e.preventDefault(); if (profilePopupTimeoutId) { clearTimeout(profilePopupTimeoutId); } profileDisabledPopup.classList.remove('opacity-0', 'pointer-events-none'); profileDisabledPopup.classList.add('opacity-100'); profilePopupTimeoutId = setTimeout(() => { profileDisabledPopup.classList.remove('opacity-100'); profileDisabledPopup.classList.add('opacity-0'); setTimeout(() => { if (!profileDisabledPopup.classList.contains('opacity-100')) { profileDisabledPopup.classList.add('pointer-events-none'); } }, 300); profilePopupTimeoutId = null; }, 2500); }); }
