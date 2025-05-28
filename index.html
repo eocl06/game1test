@@ -76,160 +76,182 @@ body.loading #appRoot > .main-screen-view { opacity: 0; transform: scale(0.98); 
 .modal-backdrop { background-color: rgba(30, 41, 59, 0.7); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
 
 /* SPONSORLU KART STİLLERİ */
-.sponsored-news-card {
-    border: 3px solid #FFBF00; /* Canlı altın sarısı kenarlık */
-}
+.sponsored-news-card { border: 3px solid #FFBF00; }
+.sponsored-badge { display: none; background-color: rgba(255, 191, 0, 0.95); color: #1F2937; padding: 3px 8px; border-radius: 0.375rem; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; align-self: flex-start; line-height: 1;}
+.sponsored-news-card .sponsored-badge { display: inline-block; }
+html, body { height: 100%; overflow: hidden; margin: 0; padding: 0; }
 
-.sponsored-badge {
-    display: none; /* Varsayılan olarak gizli */
-    background-color: rgba(255, 191, 0, 0.95); /* Altın sarısı arka plan */
-    color: #1F2937; /* Koyu gri (Tailwind slate-800) */
-    padding: 3px 8px;
-    border-radius: 0.375rem; /* Tailwind rounded-md */
-    font-size: 0.6rem;  /* Çok küçük */
-    font-weight: 700;   /* Kalın */
-    text-transform: uppercase;
-    align-self: flex-start; /* Metin bloğunun başında sola yaslı */
-    line-height: 1; /* Dikey hizalamayı iyileştirmek için */
-}
-
-.sponsored-news-card .sponsored-badge {
-    display: inline-block; /* Sponsorlu kartlarda görünür yap */
-}
-/* SPONSORLU KART STİLLERİ BİTİŞ */
-
-html, body {
-  height: 100%;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-}
-
-/* Editöre Sor Butonu Stilleri */
+/* Ana Buton */
 #askEditorBtn {
-    background-color: transparent;
-    padding: 0;
-    border-radius: 0.5rem; /* Tailwind rounded-lg */
-    width: 72px;
-    min-height: 90px; /* Height for icon + text */
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-#askEditorBtn:hover:not(.disabled) {
-    opacity: 0.85;
-}
-#askEditorBtn.disabled {
-    opacity: 0.6; /* Reduced opacity for disabled state */
-    cursor: not-allowed;
-}
-#askEditorBtn.disabled #askEditorBtnIcon {
-    filter: grayscale(90%);
-}
-#askEditorBtn.disabled #askEditorBtnText {
-    color: #9CA3AF; /* Tailwind gray-400 */
+    justify-content: flex-start;
+    gap: 8px; /* ikon ile metin arası */
+    padding: 0.4rem 0.8rem 0.4rem 0.4rem;
+    border-radius: 9999px;
+    background: linear-gradient(to bottom right, #F9FAFB, #F3F4F6);
+    height: 56px;
+    width: auto;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    cursor: pointer;
+    border: none;
+  position: relative; 
+
 }
 
+/* İkon */
 #askEditorBtnIcon {
-    width: 60px; /* Kenarları yuvarlatılmış kare için boyut */
-    height: 60px; /* Kenarları yuvarlatılmış kare için boyut */
-    border-radius: 0.75rem; /* Tailwind rounded-xl (yuvarlatılmış kare) */
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
     object-fit: cover;
-    border: 2px solid #E5E7EB; /* Tailwind slate-200 border */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    margin-bottom: 0.25rem; /* Tailwind mb-1 */
-    background-color: #F9FAFB; /* Tailwind gray-50 fallback */
-}
-#askEditorBtnText {
-    font-size: 0.65rem; /* 10.4px -> Tailwind text-[10px] or text-xs can be used */
-    font-weight: 500; /* Tailwind font-medium */
-    color: #4B5563; /* Tailwind gray-600 */
+    margin: 0;
     display: block;
-    width: 100%;
-    line-height: 1.3;
-    padding: 0 2px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: normal; /* Allow wrapping if needed */
-    max-height: 2.6em; /* Limit to two lines approx */
 }
 
-/* Zamanlayıcı Stilleri */
+/* Hover efekti */
+#askEditorBtn:hover:not(.disabled) {
+    background: linear-gradient(to bottom right, #E5E7EB, #D1D5DB);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Disabled durumu */
+#askEditorBtn.disabled {
+    opacity: 0.7;
+    cursor: default;
+}
+
+#askEditorBtn.disabled:hover {
+    background: linear-gradient(to bottom right, #F9FAFB, #F3F4F6);
+    transform: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+/* Metin */
+#askEditorBtnText {
+    font-size: 0.875rem; /* ≈14px */
+    font-weight: 600;
+    color: #374151;
+    line-height: 1.3;
+    text-align: left;
+    padding: 0;
+    margin: 0;
+    max-width: 100%;
+    white-space: nowrap;
+    word-break: keep-all;
+    font-family: 'Noto Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Meşgul durumu */
+#askEditorBtn.busy-state {
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 6px !important;
+    width: auto;
+    min-width: 130px;
+    max-width: 180px;
+    height: 48px;
+    padding: 0.4rem 0.6rem !important;
+}
+
+#askEditorBtn.busy-state #askEditorBtnIcon {
+    width: 30px !important;
+    height: 30px !important;
+    margin: 0 !important;
+}
+
+#askEditorBtn.busy-state #askEditorBtnText {
+    font-size: 0.875rem !important; /* ≈14px */
+    font-weight: 600 !important;
+    color: #374151 !important;
+    line-height: 1.3 !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: 'Noto Sans', sans-serif !important;
+}
+
+/* Soru işareti ikonu */
+.editor-busy-qmark {
+    margin-left: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    display: inline-block;
+    color: #374151 ;
+    font-weight: 400;
+    opacity: 0.9;
+    transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.editor-busy-qmark {
+    margin-left: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    display: inline-block;
+    color: #475569;
+    font-weight: 700; /* ← BURAYI ARTIRDIK */
+    opacity: 0.9;
+    transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+
+#editorBusyPopup {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 4px); /* daha yakın olsun diye 6 → 4 yaptık */
+  transform: translateY(-50%);
+  background-color: #1F2937;
+  color: #F9FAFB;
+  padding: 0.4rem 0.7rem;
+  border-radius: 0.5rem;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  display: none;
+  z-index: 100;
+  font-family: 'Noto Sans', sans-serif;
+}
+
+/* Zamanlayıcı Kutusu */
 #timerSecondsBox {
     height: 48px;
     width: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 0.75rem; /* Tailwind rounded-xl */
-    background-color: #E0F2F7; /* Tailwind cyan-100 gibi */
-    color: #0891B2; /* Tailwind cyan-700 gibi */
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.06), 0 1px 1px rgba(0,0,0,0.08);
+    border-radius: 1rem;
+    background-color: #F1F5F9;
+    color: #1E293B;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.06);
+    font-family: 'Lexend', sans-serif;
 }
+
+/* Zamanlayıcı Yazısı */
 #timerSeconds {
-    font-size: 1.25rem; /* Tailwind text-xl */
-    font-weight: 700; /* Tailwind font-bold */
-    line-height: 1; /* Tam ortalamak için */
+    font-size: 1.25rem; /* ≈20px */
+    font-weight: 700;
+    line-height: 1;
+    font-family: 'Lexend', sans-serif;
 }
 
 
 /* Editör İpucu Modalı Stilleri */
-#editorHintModal {
-    background-color: rgba(30, 41, 59, 0.85);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-}
-.editor-hint-content {
-    background-color: #1F2937;
-    color: #F3F4F6;
-    border-radius: 0.75rem;
-    padding: 1.5rem;
-    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2), 0 10px 10px -5px rgba(0,0,0,0.1);
-    max-width: 360px;
-    width: calc(100% - 2rem);
-}
-.editor-icon-container {
-    width: 72px;
-    height: 72px;
-    border-radius: 0.75rem; /* Kenarları yuvarlatılmış kare */
-    background-color: #4B5563;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    border: 3px solid #D1D5DB;
-    margin-bottom: 1rem;
-}
-.editor-icon-container img { /* Modal içindeki ikon */
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 0.5rem; /* Kenarları hafif yuvarlak */
-}
-.editor-name {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #E5E7EB;
-    margin-bottom: 0.5rem;
-}
-.editor-quote {
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: #D1D5DB;
-    min-height: 60px;
-}
-
-#closeEditorHintBtn {
-    background-color: #374151;
-    color: #D1D5DB;
-    border-radius: 9999px;
-    padding: 0.5rem;
-}
-#closeEditorHintBtn:hover {
-    background-color: #4B5563;
-}
+#editorHintModal { background-color: rgba(30, 41, 59, 0.85); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
+.editor-hint-content { background-color: #1F2937; color: #F3F4F6; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2), 0 10px 10px -5px rgba(0,0,0,0.1); max-width: 360px; width: calc(100% - 2rem); }
+.editor-icon-container { width: 72px; height: 72px; border-radius: 0.75rem; background-color: #4B5563; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 3px solid #D1D5DB; margin-bottom: 1rem; }
+.editor-icon-container img { width: 100%; height: 100%; object-fit: cover; border-radius: 0.5rem; }
+.editor-name { font-size: 1.25rem; font-weight: 700; color: #E5E7EB; margin-bottom: 0.5rem; }
+.editor-quote { font-size: 0.95rem; line-height: 1.6; color: #D1D5DB; min-height: 60px; }
+#closeEditorHintBtn { background-color: #374151; color: #D1D5DB; border-radius: 9999px; padding: 0.5rem; }
+#closeEditorHintBtn:hover { background-color: #4B5563; }
 </style>
 </head>
 <body class="bg-slate-100 lexend-font loading">
@@ -313,18 +335,20 @@ html, body {
 </div>
 </header>
 <main class="flex-1 overflow-y-auto p-4 flex flex-col items-center justify-start space-y-3 sm:space-y-4">
-    <div class="flex w-full items-center justify-around px-1 sm:px-2 my-2 sm:my-3">
-        <div class="flex flex-col items-center">
-            <div id="timerSecondsBox">
-                <p id="timerSeconds">15</p>
-            </div>
-            <p class="text-gray-500 text-[10px] mt-1 font-medium">Kalan Süre</p>
-        </div>
-        <button id="askEditorBtn" class="btn-animated">
-            <img id="askEditorBtnIcon" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Editör" class="hidden">
-            <span id="askEditorBtnText">Editöre Sor</span>
-        </button>
+<div class="flex justify-center items-center gap-24 my-3">
+  <div class="flex flex-col items-center">
+    <div id="timerSecondsBox">
+      <p id="timerSeconds">15</p>
     </div>
+    <p class="text-gray-500 text-[14px] mt-1 font-medium">Kalan Süre</p>
+  </div>
+
+  <button id="askEditorBtn" class="btn-animated">
+    <img id="askEditorBtnIcon" src="..." alt="Editör" class="..." />
+    <span id="askEditorBtnText">Editöre Sor</span>
+    <div id="editorBusyPopup">Editör bir şeylerle meşgul!</div>
+  </button>
+</div>
 
 <div id="newsCardContainer" class="relative w-full max-w-sm sm:max-w-md aspect-[3/4] rounded-2xl shadow-2xl">
 <div id="swipeRealIndicator" class="swipe-decision-indicator real-indicator">GERÇEK</div>
@@ -433,7 +457,7 @@ Karar vermek için haber kartını <strong>sağa (GERÇEK)</strong> veya <strong
     <div class="editor-hint-content feedback-content-appear text-center">
         <div class="flex justify-end mb-2">
              <button id="closeEditorHintBtn" class="btn-animated">
-                <span class="material-icons">close</span>
+                 <span class="material-icons">close</span>
             </button>
         </div>
         <div class="editor-icon-container mx-auto">
@@ -504,18 +528,18 @@ const gameNavGame = document.getElementById('gameNavGame');
 const gameNavScores = document.getElementById('gameNavScores');
 const profileDisabledPopup = document.getElementById('profileDisabledPopup');
 
-// Editör İpucu Elementleri
 const askEditorBtn = document.getElementById('askEditorBtn');
 const askEditorBtnIcon = document.getElementById('askEditorBtnIcon');
 const askEditorBtnText = document.getElementById('askEditorBtnText');
 const editorHintModal = document.getElementById('editorHintModal');
 const closeEditorHintBtn = document.getElementById('closeEditorHintBtn');
-const editorIcon = document.getElementById('editorIcon'); // Modal'daki ikon
-const editorName = document.getElementById('editorName'); // Modal'daki isim
-const editorQuote = document.getElementById('editorQuote'); // Modal'daki söz
+const editorIcon = document.getElementById('editorIcon');
+const editorName = document.getElementById('editorName');
+const editorQuote = document.getElementById('editorQuote');
+const editorBusyPopup = document.getElementById('editorBusyPopup');
 
 
-if (!appRoot || !unsupportedDeviceOverlay || !homeScreenDiv || !gameScreenDiv || !newsCard || !newsCardContainer || !modal || !timeUpPopup || !feedbackScreen || !resultsScreen || !aboutModal || !profileDisabledPopup || !newsTitle || !feedbackTitleElement || !timerSecondsBox || !askEditorBtn || !askEditorBtnIcon || !editorHintModal || !closeEditorHintBtn || !editorIcon || !editorName || !editorQuote || !askEditorBtnText ) {
+if (!appRoot || !unsupportedDeviceOverlay || !homeScreenDiv || !gameScreenDiv || !newsCard || !newsCardContainer || !modal || !timeUpPopup || !feedbackScreen || !resultsScreen || !aboutModal || !profileDisabledPopup || !newsTitle || !feedbackTitleElement || !timerSecondsBox || !askEditorBtn || !askEditorBtnIcon || !askEditorBtnText || !editorHintModal || !closeEditorHintBtn || !editorIcon || !editorName || !editorQuote || !editorBusyPopup ) {
 console.error("Kritik HTML elementlerinden biri veya birkaçı DOM'da bulunamadı! Lütfen ID'leri kontrol edin.");
 if(document.body) document.body.innerHTML = "<p style='color:red; text-align:center; font-size:20px; margin-top:50px;'>Kritik bir hata oluştu. Lütfen geliştirici konsolunu kontrol edin.</p>";
 return;
@@ -534,45 +558,49 @@ function checkScreenSize() {
 checkScreenSize();
 window.addEventListener('resize', checkScreenSize);
 
-
 const newsData = [
-{id: 1, title: "Düğün konvoyunun yolunu İHA ile kestiler!", snippet: "Sakarya’nın Arifiye ilçesinde TEKNOFEST’e hazırlanan üniversiteli gençler, geliştirdikleri İnsansız Hava Aracı (İHA) ile sıra dışı bir geleneğe imza attı.", image: "https://i.ibb.co/2YZS2NvT/image.png", link: "https://www.milliyet.com.tr/gundem/dugun-konvoyunu-iha-ile-kestiler-boyle-yol-kesme-gelenegi-gorulmedi-7377522", isReal: true, explanation: "Valla gerçek! Sakarya'da üniversiteli gençler TEKNOFEST için yaptıkları İHA ile 'Durun bakalım, önce bizim bahşiş!' demişler resmen. Teknoloji ve gelenek böyle de birleşiyormuş demek ki, helal olsun gençlerimize.", displaySourceName: "Milliyet", displaySourceLink: "https://www.milliyet.com.tr/gundem/dugun-konvoyunu-iha-ile-kestiler-boyle-yol-kesme-gelenegi-gorulmedi-7377522", isSponsored: false, editorHint: "Teknoloji bazen geleneklerle birleşince şaşırtıcı şeyler olabiliyor, özellikle gençlerin eli değince... Acaba bu da onlardan biri mi?"},
-{id: 2, title: "Bursalı işletmeci Etiyopya'lı kabileye kebabı sevdirdi!", snippet: "Keçiden Adana yapınca kabile ayağa kalktı, o günden beri herkes ona “enişte” diyor.", image: "https://i.ibb.co/mVmKVnC0/Screenshot-2025-05-25-at-16-12-45.png", link: "https://www.milliyet.com.tr/pembenar/etiyopyali-kabileye-kebabi-sevdiren-bursali-bana-herkes-burada-eniste-diyor-7368262", isReal: true, explanation: "Bu da gerçek çıktı! Bursalı bir aşçı almış eline satırı, Etiyopya'da bir kabileyi Adana kebabıyla tanıştırmış. Kabile o kadar beğenmiş ki, bizimkine 'enişte' demeye başlamışlar. Düşünsene, Etiyopya'da 'Enişte, bir Adana çek!' diyorlar.", displaySourceName: "Milliyet", displaySourceLink: "https://www.milliyet.com.tr/pembenar/etiyopyali-kabileye-kebabi-sevdiren-bursali-bana-herkes-burada-eniste-diyor-7368262", isSponsored: false, editorHint: "Bizim mutfağımızın namı dünyaya yayılmış durumda. Acaba bu haber de o sınırsız lezzet aşkının bir örneği olabilir mi?"},
-{id: 3, title: "Muhtar, köyde yapay zekâ ile düğün organize etti: 'Davulcuya Gerek Kalmadı!'", snippet: "Çorum'un Bayat ilçesine bağlı bir köyde muhtar, köydeki genç çift için ChatGPT'den düğün organizasyonu planladı. Halay sırasını bile yapay zekâ belirledi.", image: "https://i.ibb.co/4RZqspXY/image.png", link: "#muhtar-chatgpt-dugun", isReal: false, explanation: "Yok artık, bu tamamen uydurma! Çorum'da muhtar ChatGPT'ye düğün planlatmış da, halay sırasını bile o belirlemiş falan... Kulağa komik geliyor ama maalesef (ya da neyse ki) böyle bir şey yaşanmamış. Sosyal medyada geyiği dönmüştür kesin, ama haber değeri yok, sallamasyon.", isSponsored: false, editorHint: "Yapay zeka hayatımızın her alanına giriyor ama bazı şeyler hala geleneksel kalmalı, değil mi? Özellikle davul zurnasız düğün olur mu?"},
-{id: 4, title: "BYD'nin en büyüğü Tang tam tamına 7 kişilikmiş!", snippet: "Geniş İç Hacmi Görenleri Şaşırtan araca tam 7 kişilik bir aile rahatça sığabilen araç 'bu kadar da rahat olur mu?' dedirtiyor.", image: "https://i.ibb.co/mFSdLh8X/image.png", link: "^byd-tang", isReal: true, explanation: "Evet, bu haber gerçekten doğru! BYD'nin Tang modeli tam 7 koltuklu ve içi acayip geniş, yani büyük aileler ya da arkadaş grupları için süper rahat. Elektrikli olması, havalı tasarımı ve teknolojik sürüş özellikleriyle Tang, Türkiye'deki SUV'lara yeni bir soluk getiriyor. ", displaySourceName: "Hemen Keşfet!", displaySourceLink: "https://www.bydauto.com.tr/tang", isSponsored: true, editorHint: "Sponsorlu haberler genellikle ürünün bir özelliğini vurgular. Bu haberde de 'büyüklük' ve 'kişi sayısı' ön planda... Acaba gerçekten böyle bir model var mı?"},
-{id: 5, title: "İstanbul'da yeni trafik uygulaması: Kornaya fazla basana ehliyet dondurma cezası!", snippet: "İBB'nin başlattığı pilot uygulamada, trafikte 3 saniyeden uzun süre korna çalan sürücülerin ehliyetine 1 hafta el konuluyor. Tepkiler karışık.", image: "https://i.ibb.co/RpB72wQm/image.png", link: "#korna-cezasi-kurgu", isReal: false, explanation: "Keşke gerçek olsa diyenler olabilir ama bu haber de maalesef gerçek değil. İstanbul trafiğinde kornaya abananın ehliyetine el koymak... Güzel fikir ama şimdilik sadece hayal. Olsa kimse şaşırmazdı o ayrı konu tabii, o kornalarla az çekmedik!", isSponsored: false, editorHint: "İstanbul trafiği ve korna... Kulağa mantıklı gelse de, böyle radikal bir uygulama hemen devreye girer miydi? Yoksa 'olsa güzel olurdu' dedirten bir hayal mi?"},
-{id: 6, title: "Ankara'da 3+1 diye aldığı daire, 1+1 çıktı!", snippet: "Almanya’da yaşayan Mehmet Ü., Ankara’da 140 metrekare olarak satın aldığı dairenin aslında 78 metrekare ve 1+1 olduğunu fark edince şoke oldu. Konuyla ilgili dava açıldı.", image: "https://i.ibb.co/MxBPdvqN/image.png", link: "https://www.ensonhaber.com/3-sayfa/ankarada-31-diye-aldigi-daire-11-cikti", isReal: true, explanation: "Ah be Mehmet abi! Bu haber maalesef gerçek. Almanya'dan gelip Ankara'da 'Geniş geniş otururum' diye aldığı ev, kuş yuvası çıkmış resmen. 3+1 diye al, 1+1 çıksın... Tam 'Türkiye'de emlakçılık' fıkrası gibi ama yaşanmış. Basında da bayağı konuşuldu bu olay." , displaySourceName: "Hürriyet", displaySourceLink: "https://www.hurriyet.com.tr/gundem/4-yil-sonra-ogrendi-hayatinin-sokunu-yasadi-3-1-olarak-satin-aldigi-ev-1-1-cikti-42788236", isSponsored: false, editorHint: "Emlak piyasasında neler duyuyoruz neler... 'Olmaz olmaz' deme, bazen en olmayacak şeyler bile başa gelebiliyor. Dikkatli olmak lazım!"},
-{id: 7, title: "Denizli Honaz Belediyesi, şehir sakinlerini uyanmak için yeni horoz uygulamasıyla tanıştırdı!", snippet: "Uykucu vatandaşlara doğal çözüm: Belediye, sabahları klasik alarm seslerinden şikayet edenler için 'horozlu uyandırma hizmeti' başlattı. Gerçek horozlar, belirlenen adreslere sabah 06.30’da götürülüyor.", image: "https://i.ibb.co/qQ9kDcB/image.png", link: "#horozlu-uyandirici", isReal: false, explanation: "Hahaha, bu çok iyiymiş ama tabii ki uydurma! Denizli'de belediye 'Alarmla uyanamayanlara horoz yolluyoruz' dese ortalık yıkılırdı herhalde. Sabahın köründe kapına horoz gelmesi... Mizah sitelerinde falan döner anca böyle şeyler, gerçek hayatta yok (şimdilik!).", isSponsored: false, editorHint: "Belediyelerin ilginç hizmetleri olabiliyor ama bu biraz fazla 'doğal' değil mi? Sabahın köründe horoz sesiyle uyanmak... Şehir efsanesi kokusu alıyorum!" },
-{id: 8, title: "Sivaslı çiftçi, 9 deve kuşu alarak babasının hayalini gerçekleştirdi", snippet: "Sivas'ta yaşayan Berat Öksüz, babasının yıllar önceki deve kuşu besleme hayalini gerçekleştirdi. 'Bayağı şaşıran oluyor çünkü Sivas’ta görmedikleri bir şey' diyerek duygularını paylaştı.", image: "https://i.ibb.co/YTwYG3LT/image.png", link: "https://www.ensonhaber.com/3-sayfa/sivasli-ciftci-babasinin-hayalini-gerceklestirdi", isReal: true, explanation: "Bu da capcanlı gerçek! Sivaslı bir çiftçi, babasının 'Ah bir deve kuşu çiftliğim olsa' hayalini gerçekleştirmiş. Yiğidin harman olduğu yerde deve kuşu ne arar demeyin, Sivaslı şaşırtmayı sever. Adam yapmış valla, görenler de 'Vay be!' diyormuş.",displaySourceName: "En Son Haber", displaySourceLink: "https://www.ensonhaber.com/3-sayfa/sivasli-ciftci-babasinin-hayalini-gerceklestirdi", isSponsored: false, editorHint: "Anadolu'da girişimci ruhlar neler yapıyor neler! Bazen en beklenmedik yerlerde en ilginç işlere rastlayabiliyoruz. 'Yiğidin harman olduğu yer' klişesini bir düşün..." }
+{
+    id: 1, title: "Düğün konvoyunun yolunu İHA ile kestiler!", snippet: "Sakarya’nın Arifiye ilçesinde TEKNOFEST’e hazırlanan üniversiteli gençler, geliştirdikleri İnsansız Hava Aracı (İHA) ile sıra dışı bir geleneğe imza attı.", image: "https://i.ibb.co/2YZS2NvT/image.png", link: "https://www.milliyet.com.tr/gundem/dugun-konvoyunu-iha-ile-kestiler-boyle-yol-kesme-gelenegi-gorulmedi-7377522", isReal: true, explanation: "Valla gerçek! Sakarya'da üniversiteli gençler TEKNOFEST için yaptıkları İHA ile 'Durun bakalım, önce bizim bahşiş!' demişler resmen. Teknoloji ve gelenek böyle de birleşiyormuş demek ki, helal olsun gençlerimize.", displaySourceName: "Milliyet", displaySourceLink: "https://www.milliyet.com.tr/gundem/dugun-konvoyunu-iha-ile-kestiler-boyle-yol-kesme-gelenegi-gorulmedi-7377522", isSponsored: false, hintEditorName: "Cenk", hintSpecificText: "Gençler İHA'yı düğün pastası kesmek için kullanmadıklarına dua etsinler! Ama bizim gençlerimiz yaratıcıdır, teknolojiyle geleneği birleştirip 'drone'a bahşiş kaptırmış olabilirler mi acaba? TEKNOFEST çocukları bunlar, belli mi olur?"
+},
+{
+    id: 2, title: "Bursalı işletmeci Etiyopya'lı kabileye kebabı sevdirdi!", snippet: "Keçiden Adana yapınca kabile ayağa kalktı, o günden beri herkes ona “enişte” diyor.", image: "https://i.ibb.co/mVmKVnC0/Screenshot-2025-05-25-at-16-12-45.png", link: "https://www.milliyet.com.tr/pembenar/etiyopyali-kabileye-kebabi-sevdiren-bursali-bana-herkes-burada-eniste-diyor-7368262", isReal: true, explanation: "Bu da gerçek çıktı! Bursalı bir aşçı almış eline satırı, Etiyopya'da bir kabileyi Adana kebabıyla tanıştırmış. Kabile o kadar beğenmiş ki, bizimkine 'enişte' demeye başlamışlar. Düşünsene, Etiyopya'da 'Enişte, bir Adana çek!' diyorlar.", displaySourceName: "Milliyet", displaySourceLink: "https://www.milliyet.com.tr/pembenar/etiyopyali-kabileye-kebabi-sevdiren-bursali-bana-herkes-burada-eniste-diyor-7368262", isSponsored: false, hintEditorName: "Melis", hintSpecificText: "Aşkın ve kebabın dili, dini, ırkı olmaz derler... Hele bir de Bursalıysa o eli lezzetli 'enişte', Etiyopya'da bile gönülleri fethetmiş olabilir. Mideye giden yol, kalbe gidenden daha mı kısa ne? Bence bu hikayede bolca sevgi ve bir tutam da acı var, gerçek olabilir!"
+},
+{
+    id: 3, title: "Muhtar, köyde yapay zekâ ile düğün organize etti: 'Davulcuya Gerek Kalmadı!'", snippet: "Çorum'un Bayat ilçesine bağlı bir köyde muhtar, köydeki genç çift için ChatGPT'den düğün organizasyonu planladı. Halay sırasını bile yapay zekâ belirledi.", image: "https://i.ibb.co/4RZqspXY/image.png", link: "#muhtar-chatgpt-dugun", isReal: false, explanation: "Yok artık, bu tamamen uydurma! Çorum'da muhtar ChatGPT'ye düğün planlatmış da, halay sırasını bile o belirlemiş falan... Kulağa komik geliyor ama maalesef (ya da neyse ki) böyle bir şey yaşanmamış. Sosyal medyada geyiği dönmüştür kesin, ama haber değeri yok, sallamasyon.", isSponsored: false, hintEditorName: "Cenk", hintSpecificText: "ChatGPT halay başı olmuş, davulcunun pabucunu dama atmış... Valla Çorum leblebisi kadar çıtır bir fikir ama muhtar amca o kadar 'update' almış mıdır acaba? Yoksa bu, 'komikmiş ama daha demlenmesi lazım' dedirten bir internet geyiği mi? Bence bu biraz 'gelecekten geldim ama yanlış geldim' gibi duruyor."
+},
+{
+    id: 4, title: "BYD'nin en büyüğü Tang tam tamına 7 kişilikmiş!", snippet: "Geniş İç Hacmi Görenleri Şaşırtan araca tam 7 kişilik bir aile rahatça sığabilen araç 'bu kadar da rahat olur mu?' dedirtiyor.", image: "https://i.ibb.co/mFSdLh8X/image.png", link: "^byd-tang", isReal: true, explanation: "Evet, bu haber gerçekten doğru! BYD'nin Tang modeli tam 7 koltuklu ve içi acayip geniş, yani büyük aileler ya da arkadaş grupları için süper rahat. Elektrikli olması, havalı tasarımı ve teknolojik sürüş özellikleriyle Tang, Türkiye'deki SUV'lara yeni bir soluk getiriyor. ", displaySourceName: "Hemen Keşfet!", displaySourceLink: "https://www.bydauto.com.tr/tang", isSponsored: true, hintEditorName: "Can", hintSpecificText: "Sponsorlu diye hemen 'abartı' diye atlama. Bazen cidden '7 cüceler ve Pamuk Prenses aynı arabaya sığar mı?' sorusuna cevap veriyorlar. 'Geniş ailelere özel devasa SUV' furyası gerçek olabilir, gözünü dört aç! Sonuçta bu bir reklam, ürün de gerçek olsa gerek."
+},
+{
+    id: 5, title: "İstanbul'da yeni trafik uygulaması: Kornaya fazla basana ehliyet dondurma cezası!", snippet: "İBB'nin başlattığı pilot uygulamada, trafikte 3 saniyeden uzun süre korna çalan sürücülerin ehliyetine 1 hafta el konuluyor. Tepkiler karışık.", image: "https://i.ibb.co/RpB72wQm/image.png", link: "#korna-cezasi-kurgu", isReal: false, explanation: "Keşke gerçek olsa diyenler olabilir ama bu haber de maalesef gerçek değil. İstanbul trafiğinde kornaya abananın ehliyetine el koymak... Güzel fikir ama şimdilik sadece hayal. Olsa kimse şaşırmazdı o ayrı konu tabii, o kornalarla az çekmedik!", isSponsored: false, hintEditorName: "Eylül", hintSpecificText: "Ah, keşke! İstanbul'da korna yerine kuş sesi duysak... Ama sence bu kadar medeni bir çözümü hemen hayata geçirmiş olabilirler mi? Yoksa bu, her sabah trafikte sinir krizi geçiren bizlerin, özellikle biz kadınların tatlı bir rüyası mı? Biraz fazla güzel, değil mi?"
+},
+{
+    id: 6, title: "Ankara'da 3+1 diye aldığı daire, 1+1 çıktı!", snippet: "Almanya’da yaşayan Mehmet Ü., Ankara’da 140 metrekare olarak satın aldığı dairenin aslında 78 metrekare ve 1+1 olduğunu fark edince şoke oldu. Konuyla ilgili dava açıldı.", image: "https://i.ibb.co/MxBPdvqN/image.png", link: "https://www.ensonhaber.com/3-sayfa/ankarada-31-diye-aldigi-daire-11-cikti", isReal: true, explanation: "Ah be Mehmet abi! Bu haber maalesef gerçek. Almanya'dan gelip Ankara'da 'Geniş geniş otururum' diye aldığı ev, kuş yuvası çıkmış resmen. 3+1 diye al, 1+1 çıksın... Tam 'Türkiye'de emlakçılık' fıkrası gibi ama yaşanmış. Basında da bayağı konuşuldu bu olay.", displaySourceName: "Hürriyet", displaySourceLink: "https://www.hurriyet.com.tr/gundem/4-yil-sonra-ogrendi-hayatinin-sokunu-yasadi-3-1-olarak-satin-aldigi-ev-1-1-cikti-42788236", isSponsored: false, hintEditorName: "Cenk", hintSpecificText: "Ev almışsın 3+1 diye, bir açmışsın kapıyı 'Sürpriiiiz, stüdyo daireye hoş geldin!' Bu tam bizim emlakçıların 'Photoshop'la metrekare büyütme' sanatı değil mi? Ankara'da böyle 'küçülen' evler gerçekten var mıdır, ne dersin? Bence bu 'minimalist yaşam' tuzağı gerçek olabilir!"
+},
+{
+    id: 7, title: "Denizli Honaz Belediyesi, şehir sakinlerini uyanmak için yeni horoz uygulamasıyla tanıştırdı!", snippet: "Uykucu vatandaşlara doğal çözüm: Belediye, sabahları klasik alarm seslerinden şikayet edenler için 'horozlu uyandırma hizmeti' başlattı. Gerçek horozlar, belirlenen adreslere sabah 06.30’da götürülüyor.", image: "https://i.ibb.co/qQ9kDcB/image.png", link: "#horozlu-uyandirici", isReal: false, explanation: "Hahaha, bu çok iyiymiş ama tabii ki uydurma! Denizli'de belediye 'Alarmla uyanamayanlara horoz yolluyoruz' dese ortalık yıkılırdı herhalde. Sabahın köründe kapına horoz gelmesi... Mizah sitelerinde falan döner anca böyle şeyler, gerçek hayatta yok (şimdilik!).", isSponsored: false, hintEditorName: "Can", hintSpecificText: "Belediyenin 'organik alarm' projesi! Denizli horozuyla güne başlamak... Kulağa pastoral bir kabus gibi geliyor. Hayvan hakları savunucuları ne derdi acaba? Sence bizim belediyeler bu kadar 'köklere dönüş' projesine girmiş olabilir mi, yoksa birileri horozları salıp geyiğini mi yapıyor? Bu biraz fazla 'doğal' kaçmış sanki."
+},
+{
+    id: 8, title: "Sivaslı çiftçi, 9 deve kuşu alarak babasının hayalini gerçekleştirdi", snippet: "Sivas'ta yaşayan Berat Öksüz, babasının yıllar önceki deve kuşu besleme hayalini gerçekleştirdi. 'Bayağı şaşıran oluyor çünkü Sivas’ta görmedikleri bir şey' diyerek duygularını paylaştı.", image: "https://i.ibb.co/YTwYG3LT/image.png", link: "https://www.ensonhaber.com/3-sayfa/sivasli-ciftci-babasinin-hayalini-gerceklestirdi", isReal: true, explanation: "Bu da capcanlı gerçek! Sivaslı bir çiftçi, babasının 'Ah bir deve kuşu çiftliğim olsa' hayalini gerçekleştirmiş. Yiğidin harman olduğu yerde deve kuşu ne arar demeyin, Sivaslı şaşırtmayı sever. Adam yapmış valla, görenler de 'Vay be!' diyormuş.", displaySourceName: "En Son Haber", displaySourceLink: "https://www.ensonhaber.com/3-sayfa/sivasli-ciftci-babasinin-hayalini-gerceklestirdi", isSponsored: false, hintEditorName: "Melis", hintSpecificText: "Baba hayalleri kutsaldır, Sivas'ın ayazında bile olsa! Yiğidin harman olduğu yerde deve kuşu çiftliği kurmak... Kulağa 'Acaba?' dedirtse de, Anadolu insanının azmi ve sevgisi dağları (veya deve kuşlarını!) devirebilir. Bu hikayede bir sıcaklık ve azim var sanki, gerçek olabilir mi acaba?"
+}
 ];
 
-// Editör Bilgileri
 const editors = [
-    { name: "Can", icon: "https://i.ibb.co/1YLHqDmb/Chat-GPT-Image-May-28-2025-01-10-28-AM.png", genericHints: [
-        "Hmm, bu biraz şaibeli duruyor sanki... Ama bazen en inanılmaz şeyler gerçek çıkabiliyor, dikkatli ol!",
-        "Bu haber tam 'Yok artık!' dedirten cinsten. Acaba gerçekten yaşanmış olabilir mi, yoksa birilerinin hayal gücü mü devrede?",
-        "Sosyal medyada görsem direkt 'fake' derdim ama bazen hayat kurgudan daha garip olabiliyor. İyi düşün!"
-    ]},
-    { name: "Cenk", icon: "https://i.ibb.co/nqRTTb4M/Chat-GPT-Image-May-28-2025-01-10-34-AM.png", genericHints: [
-        "Detaylara dikkat et. Haberdeki küçük bir ayrıntı gerçeği ele verebilir ya da tam tersi, seni yanıltabilir.",
-        "Bu tür haberler genelde ya çok komik ya da çok şaşırtıcı olur. Acaba bu hangisi ve gerçeklik payı ne kadar?",
-        "Benzer haberler daha önce çıktı mı diye bir düşün. Bazen aynı 'şaka' farklı versiyonlarla tekrar gündeme gelebiliyor."
-    ]},
-    { name: "Eylül", icon: "https://i.ibb.co/gMGS7wGj/Chat-GPT-Image-May-28-2025-01-12-30-AM.png", genericHints: [
-        "Kaynak önemli tabii ama bazen en güvenilir kaynaklar bile 'tıklanma' uğruna ilginç başlıklar atabiliyor. Acaba bu da onlardan mı?",
-        "Olayın geçtiği yer ve zaman mantıklı mı? Bazı haberler sırf bu yüzden bile kendini ele verebilir.",
-        "Eğer gerçekse kesin konuşulurdu, eğer sahteyse de iyi bir espri malzemesi olurdu. Sen ne dersin?"
-    ]},
-    { name: "Melis", icon: "https://i.ibb.co/93TX8yL0/Chat-GPT-Image-May-28-2025-01-10-32-AM.png", genericHints: [
-        "Bu haberin bir benzerini daha önce duymuş gibi miyim? Yoksa tamamen orijinal bir 'vaka' mı söz konusu?",
-        "İçindeki insan unsuruna odaklan. İnsanların yapabilecekleri bazen sınırsız olabiliyor, hem iyi hem de 'tuhaf' anlamda.",
-        "Eğer bu sponsorlu bir içerik olsaydı, hangi mesajı vermeye çalışırdı? Bu açıdan düşünmek de bir ipucu olabilir."
-    ]}
+    { name: "Can", icon: "https://i.ibb.co/RkkZGn3p/Chat-GPT-Image-May-28-2025-01-10-28-AM-removebg-preview.png" },
+    { name: "Cenk", icon: "https://i.ibb.co/KHwHtq4/Chat-GPT-Image-May-28-2025-01-10-34-AM-removebg-preview.png" },
+    { name: "Eylül", icon: "https://i.ibb.co/B5hfMKwF/Chat-GPT-Image-May-28-2025-01-12-30-AM-removebg-preview.png" },
+    { name: "Melis", icon: "https://i.ibb.co/4wH7VqgV/Chat-GPT-Image-May-28-2025-01-10-32-AM-removebg-preview.png" }
 ];
-let activeEditorForCurrentQuestion = null;
+
+let editorForButtonIcon = null;
 let editorWhoGaveHint = null;
 let editorHintUsedThisGame = false;
+let busyPopupTimeoutId = null;
+let currentBusyIconClickListener = null;
 
+const editorBusyReasons = {
+    "Can": "PN atıyor!", "Melis": "Mailing yapıyor!", "Eylül": "Morning yapıyor!", "Cenk": "Bülten diziyor!"
+};
 
 let currentQuestionIndex = 0; let score = 0; let currentStreak = 0;
 let timerInterval; let timeLeft = 15; const TIME_PER_QUESTION = 15;
@@ -581,259 +609,186 @@ let gamePlayedAtLeastOnce = JSON.parse(localStorage.getItem('fakeOrTakeGamePlaye
 
 let isSwiping = false; let isMouseSwiping = false;
 let swipeStartX = 0; let swipeCurrentX = 0;
-const SWIPE_THRESHOLD = 70;
-const CARD_MAX_ROTATION = 20;
-const CARD_ROTATION_FACTOR = CARD_MAX_ROTATION / 160;
-let animateInTimeoutId = null;
-let timeUpAutoCloseTimeoutId = null;
-let profilePopupTimeoutId = null;
+const SWIPE_THRESHOLD = 70; const CARD_MAX_ROTATION = 20; const CARD_ROTATION_FACTOR = CARD_MAX_ROTATION / 160;
+let animateInTimeoutId = null; let timeUpAutoCloseTimeoutId = null; let profilePopupTimeoutId = null;
 
-
-function preloadImage(url) {
-    const img = new Image();
-    img.src = url;
-    img.onload = () => { /* console.log(`Başarıyla ön yüklendi: ${url}`); */ };
-    img.onerror = (err) => { console.warn(`Ön yükleme başarısız: ${url}`, err); };
-}
-
+function preloadImage(url) { const img = new Image(); img.src = url; }
 function startPreloadingNewsImages() {
-    newsData.forEach(newsItem => {
-        if (newsItem.image && !newsItem.image.startsWith("data:image/")) {
-            preloadImage(newsItem.image);
-        }
-    });
-    editors.forEach(editor => {
-        if (editor.icon) {
-            preloadImage(editor.icon);
-        }
-    });
+    newsData.forEach(newsItem => { if (newsItem.image && !newsItem.image.startsWith("data:image/")) preloadImage(newsItem.image); });
+    editors.forEach(editor => { if (editor.icon) preloadImage(editor.icon); });
 }
-
-
 function saveGamePlayedState() { localStorage.setItem('fakeOrTakeGamePlayed_tr', JSON.stringify(gamePlayedAtLeastOnce)); }
 
 function updateActiveNav(activeScreenId) {
-    const navLinkElements = [
-        homeNavHome, homeNavScores, homeNavProfile,
-        gameNavHome, gameNavGame, gameNavScores
-    ];
-
+    const navLinkElements = [ homeNavHome, homeNavScores, homeNavProfile, gameNavHome, gameNavGame, gameNavScores ];
     navLinkElements.forEach(navEl => {
         if (navEl) {
             navEl.classList.remove('nav-item-active');
             const icon = navEl.querySelector('.nav-icon');
             if (icon && !icon.classList.contains('material-symbols-outlined')) {
-                icon.classList.remove('material-icons');
-                icon.classList.add('material-icons-outlined');
+                icon.classList.remove('material-icons'); icon.classList.add('material-icons-outlined');
             }
         }
     });
-
     let elementsToActivate = [];
     const isHomeFooterVisible = homeNavHome && homeNavHome.offsetParent !== null;
     const isGameFooterVisible = gameNavGame && gameNavGame.offsetParent !== null;
-
     if (activeScreenId === 'homeScreen') {
-        if (isHomeFooterVisible) elementsToActivate.push(homeNavHome);
-        if (isGameFooterVisible) elementsToActivate.push(gameNavHome);
+        if (isHomeFooterVisible) elementsToActivate.push(homeNavHome); if (isGameFooterVisible) elementsToActivate.push(gameNavHome);
     } else if (activeScreenId === 'gameScreen') {
         if (isGameFooterVisible) elementsToActivate.push(gameNavGame);
     } else if (activeScreenId === 'resultsScreen') {
-        if (isHomeFooterVisible) elementsToActivate.push(homeNavScores);
-        if (isGameFooterVisible) elementsToActivate.push(gameNavScores);
-        if (!isHomeFooterVisible && !isGameFooterVisible && resultsScreen && !resultsScreen.classList.contains('hidden')) {
-             elementsToActivate.push(homeNavScores);
-        }
+        if (isHomeFooterVisible) elementsToActivate.push(homeNavScores); if (isGameFooterVisible) elementsToActivate.push(gameNavScores);
+        if (!isHomeFooterVisible && !isGameFooterVisible && resultsScreen && !resultsScreen.classList.contains('hidden')) elementsToActivate.push(homeNavScores);
     } else if (activeScreenId === 'profileScreen') {
         if (isHomeFooterVisible && homeNavProfile) elementsToActivate.push(homeNavProfile);
     }
-
-
     elementsToActivate.forEach(activeEl => {
         if (activeEl) {
             activeEl.classList.add('nav-item-active');
             const icon = activeEl.querySelector('.nav-icon');
             if (icon && !icon.classList.contains('material-symbols-outlined')) {
-                icon.classList.remove('material-icons-outlined');
-                icon.classList.add('material-icons');
+                icon.classList.remove('material-icons-outlined'); icon.classList.add('material-icons');
             }
         }
     });
 }
 
-
 function showScreen(screen) {
     const allScreens = [homeScreenDiv, gameScreenDiv, feedbackScreen, resultsScreen];
-    const allPopups = [timeUpPopup, modal, aboutModal, editorHintModal];
+    const allPopups = [timeUpPopup, modal, aboutModal, editorHintModal, editorBusyPopup];
     allScreens.forEach(s => { if (s) { s.classList.add('hidden'); s.classList.remove('flex'); }});
-    allPopups.forEach(p => { if (p) { p.classList.add('hidden'); p.classList.remove('flex'); }});
-
+    allPopups.forEach(p => { if (p) { p.classList.add('hidden'); if(p !== editorBusyPopup) p.classList.remove('flex'); }});
     if(screen){
         screen.classList.remove('hidden');
-        if (allScreens.includes(screen) || allPopups.includes(screen)) { screen.classList.add('flex');}
-        if (allScreens.includes(screen)) { updateActiveNav(screen.id); }
-    } else {
-        updateActiveNav(null);
-    }
-    if (!allPopups.includes(screen) && screen !== modal && screen !== aboutModal && screen !== editorHintModal) {
-        window.scrollTo(0,0);
-    }
+        if (allScreens.includes(screen) || [timeUpPopup, modal, aboutModal, editorHintModal].includes(screen) ) screen.classList.add('flex');
+        if (allScreens.includes(screen)) updateActiveNav(screen.id);
+    } else { updateActiveNav(null); }
+    if (!allPopups.includes(screen) && screen !== modal && screen !== aboutModal && screen !== editorHintModal) window.scrollTo(0,0);
 }
 
 function resetCardState(isNewCard = false) { if (!newsCard || !swipeRealIndicator || !swipeFakeIndicator) return; newsCard.classList.remove('fly-out-left', 'fly-out-right', 'enter-anim', 'active', 'swiping'); newsCard.style.animation = ''; if (isNewCard) { newsCard.classList.add('enter-anim'); newsCard.style.opacity = '0'; newsCard.style.transform = 'translateY(60px) scale(0.95) rotateX(-15deg)'; } else { newsCard.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)'; newsCard.style.transform = 'translateX(0px) rotate(0deg)'; newsCard.style.opacity = '1'; newsCard.style.visibility = 'visible'; } swipeRealIndicator.classList.remove('visible'); swipeFakeIndicator.classList.remove('visible');}
 function animateCardIn() { if (!newsCard) return; void newsCard.offsetWidth; newsCard.classList.add('active'); }
 
 function updateUIForNewQuestion() {
-    if (!newsCard || !newsImage || !newsTitle || !newsSnippet || !currentQuestionDisplay || !totalQuestionsDisplay || !progressBar || !streakCounter || !timerSeconds || !askEditorBtn || !askEditorBtnText || !askEditorBtnIcon || !editors || editors.length === 0) return;
+    if (!newsCard || !newsImage || !newsTitle || !newsSnippet || !currentQuestionDisplay || !totalQuestionsDisplay || !progressBar || !streakCounter || !timerSeconds || !askEditorBtn || !askEditorBtnText || !askEditorBtnIcon || !editors || editors.length === 0 || !newsData[currentQuestionIndex]) return;
     resetCardState(true);
-    if (currentQuestionIndex >= newsData.length) {
-        endGame();
-        return;
-    }
     const question = newsData[currentQuestionIndex];
-
-    if (question.isSponsored) {
-        newsCard.classList.add('sponsored-news-card');
-    } else {
-        newsCard.classList.remove('sponsored-news-card');
-    }
-
-    if (animateInTimeoutId) { clearTimeout(animateInTimeoutId); animateInTimeoutId = null; }
-    if (newsImage) newsImage.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+    if (question.isSponsored) newsCard.classList.add('sponsored-news-card'); else newsCard.classList.remove('sponsored-news-card');
+    if (animateInTimeoutId) clearTimeout(animateInTimeoutId);
+    if (newsImage) newsImage.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"; // Placeholder
     if (newsImage && question.image) {
         const img = new Image();
-        img.onload = () => {
-            newsImage.src = question.image;
-            animateInTimeoutId = setTimeout(animateCardIn, 30);
-        };
-        img.onerror = () => {
-            console.warn("Haber resmi yüklenemedi:", question.image);
-            newsImage.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 4'%3E%3Crect width='100%' height='100%' fill='%23e2e8f0'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='0.5px' fill='%2394a3b8'%3ENo Image%3C/text%3E%3C/svg%3E";
-            animateInTimeoutId = setTimeout(animateCardIn, 30);
-        };
+        img.onload = () => { newsImage.src = question.image; animateInTimeoutId = setTimeout(animateCardIn, 30); };
+        img.onerror = () => { newsImage.src = "data:image/svg+xml,..."; animateInTimeoutId = setTimeout(animateCardIn, 30); }; // Fallback SVG
         img.src = question.image;
-    } else {
-        newsImage.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 4'%3E%3Crect width='100%' height='100%' fill='%23e2e8f0'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='0.5px' fill='%2394a3b8'%3ENo Image%3C/text%3E%3C/svg%3E";
-        animateInTimeoutId = setTimeout(animateCardIn, 30);
-    }
-    newsTitle.textContent = question.title;
-    newsSnippet.textContent = question.snippet;
-    currentQuestionDisplay.textContent = currentQuestionIndex + 1;
-    totalQuestionsDisplay.textContent = newsData.length;
-    streakCounter.textContent = currentStreak;
-    progressBar.style.width = `${((currentQuestionIndex) / newsData.length) * 100}%`;
-    timerSeconds.classList.remove('timer-pulse', 'text-red-500');
-    if(timerSecondsBox) timerSecondsBox.classList.remove('timer-box-pulse');
+    } else { newsImage.src = "data:image/svg+xml,..."; animateInTimeoutId = setTimeout(animateCardIn, 30); }
+    newsTitle.textContent = question.title; newsSnippet.textContent = question.snippet;
+    currentQuestionDisplay.textContent = currentQuestionIndex + 1; totalQuestionsDisplay.textContent = newsData.length;
+    streakCounter.textContent = currentStreak; progressBar.style.width = `${((currentQuestionIndex) / newsData.length) * 100}%`;
+    timerSeconds.classList.remove('timer-pulse', 'text-red-500'); if(timerSecondsBox) timerSecondsBox.classList.remove('timer-box-pulse');
 
+    askEditorBtn.classList.remove('busy-state'); // Reset to default state first
 
-    // Update Ask Editor button state
     if (editorHintUsedThisGame) {
-        askEditorBtn.classList.add('disabled');
-        askEditorBtn.disabled = true;
-        askEditorBtnText.textContent = "Kullanıldı!";
+        askEditorBtn.classList.add('disabled', 'busy-state');
+        askEditorBtn.disabled = true; // Main button action disabled
+        
         if (editorWhoGaveHint && editorWhoGaveHint.icon) {
-            askEditorBtnIcon.src = editorWhoGaveHint.icon;
-            askEditorBtnIcon.alt = editorWhoGaveHint.name;
-            askEditorBtnIcon.classList.remove('hidden');
-        } else {
-            askEditorBtnIcon.classList.add('hidden');
+            askEditorBtnIcon.src = editorWhoGaveHint.icon; askEditorBtnIcon.alt = editorWhoGaveHint.name; askEditorBtnIcon.classList.remove('hidden');
+        } else askEditorBtnIcon.classList.add('hidden');
+
+        askEditorBtnText.innerHTML = `
+  <span style="display: inline-flex; align-items: center; gap: 4px;">
+    <span>Editör meşgul</span>
+    <span class="editor-busy-qmark-wrapper" style="position: relative;">
+      <span id="editorBusyHintIcon" class="material-icons-outlined editor-busy-qmark">help_outline</span>
+      <div id="editorBusyPopup">Editör meşgul: Sebep burada!</div>
+    </span>
+  </span>
+`;
+        
+        const editorBusyHintIconElement = document.getElementById('editorBusyHintIcon');
+        if (editorBusyHintIconElement && editorBusyPopup && editorWhoGaveHint) {
+            if (currentBusyIconClickListener) editorBusyHintIconElement.removeEventListener('click', currentBusyIconClickListener);
+            currentBusyIconClickListener = (event) => {
+                event.stopPropagation(); // Prevent askEditorBtn's main click if any
+                if (busyPopupTimeoutId) clearTimeout(busyPopupTimeoutId);
+                const reason = editorBusyReasons[editorWhoGaveHint.name] || "Bir şeylerle uğraşıyor!";
+                editorBusyPopup.textContent = `${editorWhoGaveHint.name}: ${reason}`;
+                editorBusyPopup.style.display = 'block';
+                busyPopupTimeoutId = setTimeout(() => { editorBusyPopup.style.display = 'none'; }, 2500);
+            };
+            editorBusyHintIconElement.addEventListener('click', currentBusyIconClickListener);
         }
+        askEditorBtn.onclick = null; // Remove main click listener
+
     } else {
-        askEditorBtn.classList.remove('disabled');
+        askEditorBtn.classList.remove('disabled', 'busy-state');
         askEditorBtn.disabled = false;
-        activeEditorForCurrentQuestion = editors[Math.floor(Math.random() * editors.length)];
-        if (activeEditorForCurrentQuestion && activeEditorForCurrentQuestion.icon) {
-            askEditorBtnIcon.src = activeEditorForCurrentQuestion.icon;
-            askEditorBtnIcon.alt = activeEditorForCurrentQuestion.name;
-            askEditorBtnIcon.classList.remove('hidden');
-            askEditorBtnText.textContent = "Editöre Sor"; // Simplified text as per last request
-        } else {
-            askEditorBtnIcon.classList.add('hidden');
-            askEditorBtnText.textContent = "Editöre Sor";
-        }
+        askEditorBtn.onclick = showEditorHint; // Restore main click listener
+
+        const designatedEditorName = question.hintEditorName;
+        editorForButtonIcon = editors.find(e => e.name === designatedEditorName) || editors[0];
+
+        if (editorForButtonIcon && editorForButtonIcon.icon) {
+            askEditorBtnIcon.src = editorForButtonIcon.icon; askEditorBtnIcon.alt = editorForButtonIcon.name; askEditorBtnIcon.classList.remove('hidden');
+        } else askEditorBtnIcon.classList.add('hidden');
+        askEditorBtnText.innerHTML = "Editöre Sor";
     }
 }
 
-function startTimer() {
+// --- startTimer GÜNCELLENDİ ---
+function startTimer(isContinuation = false) {
     if(!timerSeconds || !timerSecondsBox) return;
-    timeLeft = TIME_PER_QUESTION;
+    
+    if (!isContinuation || timeLeft <= 0) { // Sadece yeni soru veya süre bitmişse sıfırla
+        timeLeft = TIME_PER_QUESTION;
+    }
+    // If timeLeft is already positive and isContinuation is true, it uses the existing timeLeft
+
     timerSeconds.textContent = timeLeft < 10 ? `0${timeLeft}` : timeLeft;
     timerSeconds.classList.remove('timer-pulse', 'text-red-500');
     timerSecondsBox.classList.remove('timer-box-pulse');
 
-    clearInterval(timerInterval);
+    clearInterval(timerInterval); // Clear existing timer before starting a new one
     timerInterval = setInterval(() => {
         timeLeft--;
         timerSeconds.textContent = timeLeft < 10 ? `0${timeLeft}` : timeLeft;
-
         if (timeLeft <= 3 && timeLeft > 0) {
-            timerSeconds.classList.add('timer-pulse', 'text-red-500');
-            timerSecondsBox.classList.add('timer-box-pulse');
+            timerSeconds.classList.add('timer-pulse', 'text-red-500'); timerSecondsBox.classList.add('timer-box-pulse');
         } else if (timeLeft <= 5 && timeLeft > 0) {
-             timerSeconds.classList.add('timer-pulse','text-red-500');
-             timerSecondsBox.classList.remove('timer-box-pulse');
-        }
-        else {
-            timerSeconds.classList.remove('timer-pulse', 'text-red-500');
-            timerSecondsBox.classList.remove('timer-box-pulse');
+            timerSeconds.classList.add('timer-pulse','text-red-500'); timerSecondsBox.classList.remove('timer-box-pulse');
+        } else {
+            timerSeconds.classList.remove('timer-pulse', 'text-red-500'); timerSecondsBox.classList.remove('timer-box-pulse');
         }
         if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            showTimeUpPopup();
+            clearInterval(timerInterval); showTimeUpPopup();
         }
     }, 1000);
 }
 
-function showTimeUpPopup() {
-    if (!timeUpPopup) return;
-    timeUpPopup.classList.remove('hidden');
-    timeUpPopup.classList.add('flex');
-    if (timeUpAutoCloseTimeoutId) { clearTimeout(timeUpAutoCloseTimeoutId); }
-    timeUpAutoCloseTimeoutId = setTimeout(() => {
-        if (timeUpPopup && !timeUpPopup.classList.contains('hidden')) { handleAnswer(null); }
-    }, 1200);
-}
-
-if (timeUpOkButton) {
-    timeUpOkButton.addEventListener('click', () => {
-        if (timeUpAutoCloseTimeoutId) { clearTimeout(timeUpAutoCloseTimeoutId); timeUpAutoCloseTimeoutId = null; }
-        handleAnswer(null);
-    });
-}
-
-function processSwipeDecision(isRealChoice) { if(!newsCard || !swipeRealIndicator || !swipeFakeIndicator) return; newsCard.style.transition = 'none'; if (isRealChoice) { newsCard.classList.add('fly-out-right'); swipeRealIndicator.classList.add('visible'); } else { newsCard.classList.add('fly-out-left'); swipeFakeIndicator.classList.add('visible'); } setTimeout(() => { handleAnswer(isRealChoice); }, 400); }
+function showTimeUpPopup() { /* ... (önceki gibi) ... */ if (!timeUpPopup) return; timeUpPopup.classList.remove('hidden'); timeUpPopup.classList.add('flex'); if (timeUpAutoCloseTimeoutId) { clearTimeout(timeUpAutoCloseTimeoutId); } timeUpAutoCloseTimeoutId = setTimeout(() => { if (timeUpPopup && !timeUpPopup.classList.contains('hidden')) { handleAnswer(null); } }, 1200); }
+if (timeUpOkButton) { timeUpOkButton.addEventListener('click', () => { if (timeUpAutoCloseTimeoutId) { clearTimeout(timeUpAutoCloseTimeoutId); timeUpAutoCloseTimeoutId = null; } handleAnswer(null); }); }
+function processSwipeDecision(isRealChoice) { /* ... (önceki gibi) ... */ if(!newsCard || !swipeRealIndicator || !swipeFakeIndicator) return; newsCard.style.transition = 'none'; if (isRealChoice) { newsCard.classList.add('fly-out-right'); swipeRealIndicator.classList.add('visible'); } else { newsCard.classList.add('fly-out-left'); swipeFakeIndicator.classList.add('visible'); } setTimeout(() => { handleAnswer(isRealChoice); }, 400); }
 
 function handleAnswer(userChoiceIsReal) {
     if (!scoreDisplay || !feedbackTitleElement || !feedbackIcon || !feedbackBox || !feedbackText || !feedbackSourceSection || !feedbackSourceName || !feedbackSourceLinkTag || !streakCounter || !timerSeconds) return;
-    clearInterval(timerInterval);
+    clearInterval(timerInterval); // Süreyi durdur
     if(timerSeconds) { timerSeconds.classList.remove('timer-pulse', 'text-red-500'); }
     if(timerSecondsBox) timerSecondsBox.classList.remove('timer-box-pulse');
-
     if (timeUpAutoCloseTimeoutId) { clearTimeout(timeUpAutoCloseTimeoutId); timeUpAutoCloseTimeoutId = null; }
     if (timeUpPopup && !timeUpPopup.classList.contains('hidden')) { timeUpPopup.classList.add('hidden'); timeUpPopup.classList.remove('flex');}
-    if (editorHintModal && !editorHintModal.classList.contains('hidden')) {
-        editorHintModal.classList.add('hidden');
-        editorHintModal.classList.remove('flex');
-    }
-
-
-    const currentQuestion = newsData[currentQuestionIndex];
-    const wasCorrect = userChoiceIsReal === currentQuestion.isReal;
-
-    if (userChoiceIsReal !== null && wasCorrect) { score++; currentStreak++;
-    } else if (userChoiceIsReal !== null && !wasCorrect) { currentStreak = 0; }
-    if(userChoiceIsReal === null) currentStreak = 0;
-
+    if (editorHintModal && !editorHintModal.classList.contains('hidden')) { editorHintModal.classList.add('hidden'); editorHintModal.classList.remove('flex'); }
+    if (editorBusyPopup && editorBusyPopup.style.display === 'block') editorBusyPopup.style.display = 'none';
+    const currentQuestion = newsData[currentQuestionIndex]; const wasCorrect = userChoiceIsReal === currentQuestion.isReal;
+    if (userChoiceIsReal !== null && wasCorrect) { score++; currentStreak++; } else if (userChoiceIsReal !== null && !wasCorrect) { currentStreak = 0; } if(userChoiceIsReal === null) currentStreak = 0;
     scoreDisplay.textContent = score; streakCounter.textContent = currentStreak;
-    feedbackIcon.className = "material-icons-outlined feedback-content-appear";
-    feedbackBox.className = "rounded-lg bg-white p-5 sm:p-6 shadow-xl mb-6 sm:mb-8 feedback-content-appear";
-    feedbackTitleElement.classList.add("feedback-content-appear");
-    feedbackSourceSection.classList.add('hidden');
-    let feedbackStr = "";
-
+    feedbackIcon.className = "material-icons-outlined feedback-content-appear"; feedbackBox.className = "rounded-lg bg-white p-5 sm:p-6 shadow-xl mb-6 sm:mb-8 feedback-content-appear";
+    feedbackTitleElement.classList.add("feedback-content-appear"); feedbackSourceSection.classList.add('hidden'); let feedbackStr = "";
     if (userChoiceIsReal === null) {
         feedbackTitleElement.textContent = "Süre Bitti!"; feedbackIcon.textContent = "timer_off"; feedbackIcon.classList.add('timeup-icon'); feedbackBox.classList.add('incorrect-feedback');
-feedbackStr = `Bu soru için süreniz doldu.<br>Doğru cevap: <strong>${currentQuestion.isReal ? 'GERÇEK' : 'SAHTE'}</strong><br><br>${currentQuestion.explanation || ''}`;
+        feedbackStr = `Bu soru için süreniz doldu.<br>Doğru cevap: <strong>${currentQuestion.isReal ? 'GERÇEK' : 'SAHTE'}</strong><br><br>${currentQuestion.explanation || ''}`;
     } else if (wasCorrect) {
         feedbackTitleElement.textContent = "Bildin!"; feedbackIcon.textContent = "check_circle"; feedbackIcon.classList.add('status-icon-correct'); feedbackBox.classList.add('correct-feedback');
         feedbackStr = currentQuestion.explanation || (currentQuestion.isReal ? "Bu haber gerçekten doğru." : "Bu haberin sahte olduğunu doğru tespit ettin.");
@@ -842,388 +797,120 @@ feedbackStr = `Bu soru için süreniz doldu.<br>Doğru cevap: <strong>${currentQ
         feedbackStr = `Doğru cevap <strong>${currentQuestion.isReal ? 'GERÇEK' : 'SAHTE'}</strong> olmalıydı.<br><br>${currentQuestion.explanation || ''}`;
     }
     feedbackText.innerHTML = feedbackStr;
-    if (currentQuestion.displaySourceName && currentQuestion.displaySourceLink) {
-        feedbackSourceName.textContent = currentQuestion.displaySourceName; feedbackSourceLinkTag.href = currentQuestion.displaySourceLink; feedbackSourceSection.classList.remove('hidden');
-    }
+    if (currentQuestion.displaySourceName && currentQuestion.displaySourceLink) { feedbackSourceName.textContent = currentQuestion.displaySourceName; feedbackSourceLinkTag.href = currentQuestion.displaySourceLink; feedbackSourceSection.classList.remove('hidden'); }
     feedbackNextButton.textContent = (currentQuestionIndex >= newsData.length - 1) ? "Sonuçları Gör" : "Sonraki Soru";
     showScreen(feedbackScreen);
 }
 
-function proceedToNextStep() { if (!progressBar) return; currentQuestionIndex++; progressBar.style.width = `${(currentQuestionIndex / newsData.length) * 100}%`; if (currentQuestionIndex < newsData.length) { showScreen(gameScreenDiv); updateUIForNewQuestion(); startTimer(); } else { endGame(); }}
+function proceedToNextStep() { if (!progressBar) return; currentQuestionIndex++; progressBar.style.width = `${(currentQuestionIndex / newsData.length) * 100}%`; if (currentQuestionIndex < newsData.length) { showScreen(gameScreenDiv); updateUIForNewQuestion(); startTimer(); /* Yeni soru için süreyi normal başlat */ } else { endGame(); }}
 if(feedbackNextButton) feedbackNextButton.addEventListener('click', proceedToNextStep);
 if(closeFeedbackBtn) closeFeedbackBtn.addEventListener('click', proceedToNextStep);
 
-function startGame() {
-    if (!scoreDisplay || !totalQuestionsDisplay || !progressBar || !streakCounter || !askEditorBtn || !askEditorBtnText || !askEditorBtnIcon || !editors || editors.length === 0) {
-         console.error("Oyun başlatma için UI elementleri veya editör verisi eksik"); return;
-    }
-    gameStartTime = Date.now();
-    currentQuestionIndex = 0; score = 0; currentStreak = 0;
-    editorHintUsedThisGame = false;
-    editorWhoGaveHint = null;
-    activeEditorForCurrentQuestion = null;
-
-    scoreDisplay.textContent = score;
-    streakCounter.textContent = currentStreak;
-    totalQuestionsDisplay.textContent = newsData.length;
-    progressBar.style.width = '0%';
-
-    showScreen(gameScreenDiv);
-    updateUIForNewQuestion();
-    startTimer();
-}
-
-function populateLeaderboard() {
-    if (!leaderboardEntriesContainer || !newsData || newsData.length === 0) return;
-    leaderboardEntriesContainer.innerHTML = '';
-
-    const botNamesAndPersonalities = [
-        { name: "Fatih Mandalina", scoreMultiplier: 0.92 }, { name: "İsmail Büyükyaya", scoreMultiplier: 0.88 },
-        { name: "Cüneyt Sazdemir", scoreMultiplier: 0.95 }, { name: "Nevşin Bambu", scoreMultiplier: 0.85 },
-        { name: "Ahmet Haktan", scoreMultiplier: 0.78 }, { name: "Enver Taysever", scoreMultiplier: 0.90 },
-        { name: "Ece Döner", scoreMultiplier: 0.82 }, { name: "Deniz Zeybek", scoreMultiplier: 0.75 },
-        { name: "Yılmaz Özil", scoreMultiplier: 0.97 }, { name: "Fatih Ortaylı", scoreMultiplier: 0.80 }
-    ];
-
-    let botEntries = botNamesAndPersonalities.map(bot => ({
-        name: bot.name,
-        score: Math.min(newsData.length, Math.max(0, Math.floor(Math.random() * (newsData.length / 1.8) + (newsData.length * bot.scoreMultiplier * 0.45)))),
-        isPlayer: false
-    }));
-    botEntries.sort(() => 0.5 - Math.random());
-    const numBotsToBoost = Math.min(3, botEntries.length);
-    for (let i = 0; i < numBotsToBoost; i++) {
-        botEntries[i].score = Math.max(botEntries[i].score, Math.floor(newsData.length * (0.65 + Math.random() * 0.3)));
-    }
-
-    const playerScoreEntry = { name: "SEN", score: (gamePlayedAtLeastOnce ? score : 0), isPlayer: true };
-    let allEntries = [...botEntries, playerScoreEntry];
-
-    allEntries.sort((a, b) => {
-        if (b.score === a.score) {
-            if (a.isPlayer) return -1;
-            if (b.isPlayer) return 1;
-            return a.name.localeCompare(b.name);
-        }
-        return b.score - a.score;
-    });
-
-    const maxEntriesToShow = 7;
-    let displayEntries = [];
-
-    if (allEntries.length <= maxEntriesToShow) {
-        displayEntries = [...allEntries];
-    } else {
-        const playerRankGlobal = allEntries.findIndex(entry => entry.isPlayer);
-        if (playerRankGlobal < maxEntriesToShow -1 ) {
-            displayEntries = allEntries.slice(0, maxEntriesToShow);
-        } else {
-            displayEntries = allEntries.slice(0, maxEntriesToShow - 2);
-            displayEntries.push({ name: "...", score: -1, isPlayer: false, isEllipsis: true });
-            if (!displayEntries.some(e=> e.isPlayer && e.name === playerScoreEntry.name)) {
-                 displayEntries.push(playerScoreEntry);
-            }
-        }
-        if (displayEntries.some(e => e.isEllipsis) && displayEntries.findIndex(e => e.isPlayer) === displayEntries.findIndex(e => e.isEllipsis) -1 ) {
-            displayEntries = displayEntries.filter(e => !e.isEllipsis);
-            if(displayEntries.length < maxEntriesToShow && allEntries.length > maxEntriesToShow) {
-                const nextEntry = allEntries.find(ae => !displayEntries.some(de => de.name === ae.name && de.score === ae.score));
-                if(nextEntry) displayEntries.push(nextEntry);
-            }
-        }
-    }
-     displayEntries.sort((a, b) => {
-        if(a.isEllipsis) return 1;
-        if(b.isEllipsis) return -1;
-        if (b.score === a.score) {
-            if (a.isPlayer) return -1;
-            if (b.isPlayer) return 1;
-            return a.name.localeCompare(b.name);
-        }
-        return b.score - a.score;
-    });
-    if (displayEntries.length > maxEntriesToShow) {
-        const playerInDisplay = displayEntries.some(e => e.isPlayer);
-        if (playerInDisplay && displayEntries.findIndex(e => e.isPlayer) >= maxEntriesToShow -1) {
-             let tempEntries = displayEntries.slice(0, maxEntriesToShow -1);
-             if (!tempEntries.some(e=>e.isPlayer)) tempEntries.push(playerScoreEntry);
-             displayEntries = tempEntries;
-             displayEntries.sort((a, b) => { if (b.score === a.score) { if (a.isPlayer) return -1; if (b.isPlayer) return 1; return a.name.localeCompare(b.name); } return b.score - a.score; });
-        } else {
-            displayEntries = displayEntries.slice(0, maxEntriesToShow);
-        }
-    }
-
-
-    displayEntries.forEach((entry) => {
-        const entryDiv = document.createElement('div');
-        entryDiv.className = 'flex items-center justify-between rounded-lg p-4 transition-all text-sm sm:text-base shadow-sm';
-
-        if(entry.isEllipsis) {
-            entryDiv.innerHTML = `<p class="text-center w-full text-slate-500 text-xs">...</p>`;
-            leaderboardEntriesContainer.appendChild(entryDiv);
-            return;
-        }
-
-        const leftPart = document.createElement('div');
-        leftPart.className = 'flex items-center gap-3';
-
-        const rankDisplaySpan = document.createElement('span');
-        const actualRank = allEntries.findIndex(e => e.name === entry.name && e.score === entry.score && e.isPlayer === entry.isPlayer) + 1;
-        let rankText = `${actualRank}.`;
-        let rankIconClass = 'text-slate-600';
-
-        if (actualRank === 1) { rankText = '🥇'; rankIconClass = 'text-amber-400';}
-        else if (actualRank === 2) { rankText = '🥈'; rankIconClass = 'text-slate-400';}
-        else if (actualRank === 3) { rankText = '🥉'; rankIconClass = 'text-orange-400';}
-
-
-        if (entry.isPlayer) {
-            entryDiv.classList.add('bg-indigo-100', 'text-indigo-700', 'ring-2', 'ring-offset-2', 'ring-offset-indigo-100', 'ring-indigo-500', 'shadow-md');
-            rankDisplaySpan.className = `text-xl font-semibold ${rankIconClass}`;
-            rankDisplaySpan.innerHTML = `${(actualRank > 3) ? '★ ' : ''}${rankText}`;
-        } else {
-            entryDiv.classList.add('bg-slate-100', 'hover:bg-slate-200/80');
-            rankDisplaySpan.className = `text-lg sm:text-xl font-semibold ${actualRank <=3 ? rankIconClass : 'text-slate-600'}`;
-            rankDisplaySpan.innerHTML = rankText;
-        }
-        leftPart.appendChild(rankDisplaySpan);
-
-        const nameP = document.createElement('p');
-        nameP.className = `font-medium ${entry.isPlayer ? 'text-indigo-800' : 'text-slate-700'}`;
-        nameP.textContent = entry.name;
-        leftPart.appendChild(nameP);
-
-        const scoreP = document.createElement('p');
-        scoreP.className = `font-semibold ${entry.isPlayer ? 'text-indigo-800' : 'text-slate-700'}`;
-        scoreP.textContent = `${entry.score}/${newsData.length}`;
-
-        entryDiv.appendChild(leftPart);
-        entryDiv.appendChild(scoreP);
-        leaderboardEntriesContainer.appendChild(entryDiv);
-    });
-}
-
-
-function endGame() {
-    if (!timeTakenValue || !finalScoreValue || !highScoreDisplay) return;
-    gamePlayedAtLeastOnce = true;
-    saveGamePlayedState();
-    clearInterval(timerInterval);
-    if(timerSeconds) { timerSeconds.classList.remove('timer-pulse', 'text-red-500'); }
-    if(timerSecondsBox) timerSecondsBox.classList.remove('timer-box-pulse');
-
-    const gameEndTimeVariable = Date.now();
-    const timeDiff = gameEndTimeVariable - (gameStartTime || gameEndTimeVariable) ;
-    const mins = Math.floor(timeDiff / 60000); const secs = Math.floor((timeDiff % 60000) / 1000);
-
-    if (timeTakenValue) timeTakenValue.textContent = `${mins} dakika ${secs} saniye`;
-    if (finalScoreValue) finalScoreValue.textContent = `${score}/${newsData.length}`;
-
-    let hs = parseInt(localStorage.getItem('fakeOrTakeHighScore_tr')) || 0;
-    if (score > hs) { hs = score; localStorage.setItem('fakeOrTakeHighScore_tr', hs); }
-    if (highScoreDisplay) highScoreDisplay.textContent = `${hs}/${newsData.length}`;
-
-    populateLeaderboard();
-    showScreen(resultsScreen);
-}
-
-function resetGame() {
-    clearInterval(timerInterval);
-    if(timerSeconds) { timerSeconds.classList.remove('timer-pulse', 'text-red-500'); }
-    if(timerSecondsBox) timerSecondsBox.classList.remove('timer-box-pulse');
-    if (editorHintModal && !editorHintModal.classList.contains('hidden')) {
-        editorHintModal.classList.add('hidden');
-        editorHintModal.classList.remove('flex');
-    }
-    if(askEditorBtnIcon) {
-        askEditorBtnIcon.classList.add('hidden');
-        askEditorBtnIcon.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
-        askEditorBtnIcon.alt = "";
-    }
-    if(askEditorBtnText) askEditorBtnText.textContent = "Editöre Sor";
-    activeEditorForCurrentQuestion = null;
-    editorWhoGaveHint = null;
-}
+function startGame() { /* ... (önceki gibi, editorForButtonIcon resetlendi) ... */ if (!scoreDisplay || !totalQuestionsDisplay || !progressBar || !streakCounter || !askEditorBtn || !askEditorBtnText || !askEditorBtnIcon || !editors || editors.length === 0) { console.error("Oyun başlatma için UI elementleri veya editör verisi eksik"); return; } gameStartTime = Date.now(); currentQuestionIndex = 0; score = 0; currentStreak = 0; editorHintUsedThisGame = false; editorWhoGaveHint = null; editorForButtonIcon = null; if(busyPopupTimeoutId) clearTimeout(busyPopupTimeoutId); if(editorBusyPopup) editorBusyPopup.style.display = 'none'; scoreDisplay.textContent = score; streakCounter.textContent = currentStreak; totalQuestionsDisplay.textContent = newsData.length; progressBar.style.width = '0%'; showScreen(gameScreenDiv); updateUIForNewQuestion(); startTimer(); /* Oyun başında süreyi normal başlat */ }
+function populateLeaderboard() { /* ... (önceki gibi) ... */ if (!leaderboardEntriesContainer || !newsData || newsData.length === 0) return; leaderboardEntriesContainer.innerHTML = ''; const botNamesAndPersonalities = [ { name: "Fatih Mandalina", scoreMultiplier: 0.92 }, { name: "İsmail Büyükyaya", scoreMultiplier: 0.88 }, { name: "Cüneyt Sazdemir", scoreMultiplier: 0.95 }, { name: "Nevşin Bambu", scoreMultiplier: 0.85 }, { name: "Ahmet Haktan", scoreMultiplier: 0.78 }, { name: "Enver Taysever", scoreMultiplier: 0.90 }, { name: "Ece Döner", scoreMultiplier: 0.82 }, { name: "Deniz Zeybek", scoreMultiplier: 0.75 }, { name: "Yılmaz Özil", scoreMultiplier: 0.97 }, { name: "Fatih Ortaylı", scoreMultiplier: 0.80 } ]; let botEntries = botNamesAndPersonalities.map(bot => ({ name: bot.name, score: Math.min(newsData.length, Math.max(0, Math.floor(Math.random() * (newsData.length / 1.8) + (newsData.length * bot.scoreMultiplier * 0.45)))), isPlayer: false })); botEntries.sort(() => 0.5 - Math.random()); const numBotsToBoost = Math.min(3, botEntries.length); for (let i = 0; i < numBotsToBoost; i++) { botEntries[i].score = Math.max(botEntries[i].score, Math.floor(newsData.length * (0.65 + Math.random() * 0.3))); } const playerScoreEntry = { name: "SEN", score: (gamePlayedAtLeastOnce ? score : 0), isPlayer: true }; let allEntries = [...botEntries, playerScoreEntry]; allEntries.sort((a, b) => { if (b.score === a.score) { if (a.isPlayer) return -1; if (b.isPlayer) return 1; return a.name.localeCompare(b.name); } return b.score - a.score; }); const maxEntriesToShow = 7; let displayEntries = []; if (allEntries.length <= maxEntriesToShow) { displayEntries = [...allEntries]; } else { const playerRankGlobal = allEntries.findIndex(entry => entry.isPlayer); if (playerRankGlobal < maxEntriesToShow -1 ) { displayEntries = allEntries.slice(0, maxEntriesToShow); } else { displayEntries = allEntries.slice(0, maxEntriesToShow - 2); displayEntries.push({ name: "...", score: -1, isPlayer: false, isEllipsis: true }); if (!displayEntries.some(e=> e.isPlayer && e.name === playerScoreEntry.name)) { displayEntries.push(playerScoreEntry); } } if (displayEntries.some(e => e.isEllipsis) && displayEntries.findIndex(e => e.isPlayer) === displayEntries.findIndex(e => e.isEllipsis) -1 ) { displayEntries = displayEntries.filter(e => !e.isEllipsis); if(displayEntries.length < maxEntriesToShow && allEntries.length > maxEntriesToShow) { const nextEntry = allEntries.find(ae => !displayEntries.some(de => de.name === ae.name && de.score === ae.score)); if(nextEntry) displayEntries.push(nextEntry); } } } displayEntries.sort((a, b) => { if(a.isEllipsis) return 1; if(b.isEllipsis) return -1; if (b.score === a.score) { if (a.isPlayer) return -1; if (b.isPlayer) return 1; return a.name.localeCompare(b.name); } return b.score - a.score; }); if (displayEntries.length > maxEntriesToShow) { const playerInDisplay = displayEntries.some(e => e.isPlayer); if (playerInDisplay && displayEntries.findIndex(e => e.isPlayer) >= maxEntriesToShow -1) { let tempEntries = displayEntries.slice(0, maxEntriesToShow -1); if (!tempEntries.some(e=>e.isPlayer)) tempEntries.push(playerScoreEntry); displayEntries = tempEntries; displayEntries.sort((a, b) => { if (b.score === a.score) { if (a.isPlayer) return -1; if (b.isPlayer) return 1; return a.name.localeCompare(b.name); } return b.score - a.score; }); } else { displayEntries = displayEntries.slice(0, maxEntriesToShow); } } displayEntries.forEach((entry) => { const entryDiv = document.createElement('div'); entryDiv.className = 'flex items-center justify-between rounded-lg p-4 transition-all text-sm sm:text-base shadow-sm'; if(entry.isEllipsis) { entryDiv.innerHTML = `<p class="text-center w-full text-slate-500 text-xs">...</p>`; leaderboardEntriesContainer.appendChild(entryDiv); return; } const leftPart = document.createElement('div'); leftPart.className = 'flex items-center gap-3'; const rankDisplaySpan = document.createElement('span'); const actualRank = allEntries.findIndex(e => e.name === entry.name && e.score === entry.score && e.isPlayer === entry.isPlayer) + 1; let rankText = `${actualRank}.`; let rankIconClass = 'text-slate-600'; if (actualRank === 1) { rankText = '🥇'; rankIconClass = 'text-amber-400';} else if (actualRank === 2) { rankText = '🥈'; rankIconClass = 'text-slate-400';} else if (actualRank === 3) { rankText = '🥉'; rankIconClass = 'text-orange-400';} if (entry.isPlayer) { entryDiv.classList.add('bg-indigo-100', 'text-indigo-700', 'ring-2', 'ring-offset-2', 'ring-offset-indigo-100', 'ring-indigo-500', 'shadow-md'); rankDisplaySpan.className = `text-xl font-semibold ${rankIconClass}`; rankDisplaySpan.innerHTML = `${(actualRank > 3) ? '★ ' : ''}${rankText}`; } else { entryDiv.classList.add('bg-slate-100', 'hover:bg-slate-200/80'); rankDisplaySpan.className = `text-lg sm:text-xl font-semibold ${actualRank <=3 ? rankIconClass : 'text-slate-600'}`; rankDisplaySpan.innerHTML = rankText; } leftPart.appendChild(rankDisplaySpan); const nameP = document.createElement('p'); nameP.className = `font-medium ${entry.isPlayer ? 'text-indigo-800' : 'text-slate-700'}`; nameP.textContent = entry.name; leftPart.appendChild(nameP); const scoreP = document.createElement('p'); scoreP.className = `font-semibold ${entry.isPlayer ? 'text-indigo-800' : 'text-slate-700'}`; scoreP.textContent = `${entry.score}/${newsData.length}`; entryDiv.appendChild(leftPart); entryDiv.appendChild(scoreP); leaderboardEntriesContainer.appendChild(entryDiv); }); }
+function endGame() { /* ... (önceki gibi) ... */ if (!timeTakenValue || !finalScoreValue || !highScoreDisplay) return; gamePlayedAtLeastOnce = true; saveGamePlayedState(); clearInterval(timerInterval); if(timerSeconds) { timerSeconds.classList.remove('timer-pulse', 'text-red-500'); } if(timerSecondsBox) timerSecondsBox.classList.remove('timer-box-pulse'); const gameEndTimeVariable = Date.now(); const timeDiff = gameEndTimeVariable - (gameStartTime || gameEndTimeVariable) ; const mins = Math.floor(timeDiff / 60000); const secs = Math.floor((timeDiff % 60000) / 1000); if (timeTakenValue) timeTakenValue.textContent = `${mins} dakika ${secs} saniye`; if (finalScoreValue) finalScoreValue.textContent = `${score}/${newsData.length}`; let hs = parseInt(localStorage.getItem('fakeOrTakeHighScore_tr')) || 0; if (score > hs) { hs = score; localStorage.setItem('fakeOrTakeHighScore_tr', hs); } if (highScoreDisplay) highScoreDisplay.textContent = `${hs}/${newsData.length}`; populateLeaderboard(); showScreen(resultsScreen); }
+function resetGame() { /* ... (önceki gibi, editorForButtonIcon resetlendi) ... */ clearInterval(timerInterval); if(timerSeconds) { timerSeconds.classList.remove('timer-pulse', 'text-red-500'); } if(timerSecondsBox) timerSecondsBox.classList.remove('timer-box-pulse'); if (editorHintModal && !editorHintModal.classList.contains('hidden')) { editorHintModal.classList.add('hidden'); editorHintModal.classList.remove('flex'); } if(askEditorBtnIcon) { askEditorBtnIcon.classList.add('hidden'); askEditorBtnIcon.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"; askEditorBtnIcon.alt = ""; } if(askEditorBtnText) askEditorBtnText.innerHTML = "Editöre Sor"; editorForButtonIcon = null; editorWhoGaveHint = null; if(busyPopupTimeoutId) clearTimeout(busyPopupTimeoutId); if(editorBusyPopup) editorBusyPopup.style.display = 'none'; askEditorBtn.classList.remove('busy-state'); /* Reset busy state class */ }
 function navigateToHome() { resetGame(); showScreen(homeScreenDiv); }
+function navigateToResults() { resetGame(); if (!gamePlayedAtLeastOnce) { if (finalScoreValue) finalScoreValue.textContent = "0/0"; if (timeTakenValue) timeTakenValue.textContent = "-"; let hs = parseInt(localStorage.getItem('fakeOrTakeHighScore_tr')) || 0; let totalQDisplay = newsData && newsData.length > 0 ? newsData.length : "X"; if (highScoreDisplay) highScoreDisplay.textContent = `${hs}/${totalQDisplay}`; } else { if (finalScoreValue && typeof score !== 'undefined' && newsData && newsData.length > 0) { finalScoreValue.textContent = `${score}/${newsData.length}`; } let hs = parseInt(localStorage.getItem('fakeOrTakeHighScore_tr')) || 0; if (highScoreDisplay && newsData && newsData.length > 0) { highScoreDisplay.textContent = `${hs}/${newsData.length}`; } } populateLeaderboard(); showScreen(resultsScreen); }
+function unifiedSwipeStart(e) { /* ... (önceki gibi) ... */ if (!newsCard || newsCard.classList.contains('fly-out-left') || newsCard.classList.contains('fly-out-right')) return; if (animateInTimeoutId) { clearTimeout(animateInTimeoutId); animateInTimeoutId = null; } if (newsCard.classList.contains('enter-anim') || (newsCard.style.animation && newsCard.style.animation !== 'none')) { newsCard.classList.remove('enter-anim', 'active'); newsCard.style.animation = 'none'; newsCard.style.visibility = 'visible'; } newsCard.style.opacity = '1'; newsCard.style.transform = ''; isSwiping = true; isMouseSwiping = (e.type === 'mousedown'); swipeStartX = isMouseSwiping ? e.pageX : e.touches[0].pageX; newsCard.style.transition = 'none'; newsCard.classList.add('swiping'); if (isMouseSwiping) { document.addEventListener('mousemove', unifiedSwipeMove); document.addEventListener('mouseup', unifiedSwipeEnd); } }
+function unifiedSwipeMove(e) { /* ... (önceki gibi) ... */ if (!isSwiping || !newsCard) return; swipeCurrentX = isMouseSwiping ? e.pageX : e.touches[0].pageX; let diffX = swipeCurrentX - swipeStartX; if (e.type === 'touchmove' && Math.abs(diffX) > 5 && e.cancelable) { e.preventDefault(); } let rotation = diffX * CARD_ROTATION_FACTOR; rotation = Math.max(-CARD_MAX_ROTATION, Math.min(CARD_MAX_ROTATION, rotation)); const newTransform = `translateX(${diffX}px) rotate(${rotation}deg)`; requestAnimationFrame(() => { if (isSwiping) { newsCard.style.transform = newTransform; } }); if (diffX > SWIPE_THRESHOLD / 1.8) { swipeRealIndicator.classList.add('visible'); swipeFakeIndicator.classList.remove('visible'); } else if (diffX < -SWIPE_THRESHOLD / 1.8) { swipeFakeIndicator.classList.add('visible'); swipeRealIndicator.classList.remove('visible'); } else { swipeRealIndicator.classList.remove('visible'); swipeFakeIndicator.classList.remove('visible'); } }
+function unifiedSwipeEnd(e) { /* ... (önceki gibi) ... */ if (!isSwiping || !newsCard) return; if (isMouseSwiping) { document.removeEventListener('mousemove', unifiedSwipeMove); document.removeEventListener('mouseup', unifiedSwipeEnd); } isSwiping = false; isMouseSwiping = false; newsCard.classList.remove('swiping'); let diffX = swipeCurrentX - swipeStartX; if (Math.abs(diffX) > SWIPE_THRESHOLD) { if (diffX > 0) { swipeRealIndicator.classList.add('visible'); } else { swipeFakeIndicator.classList.add('visible'); } processSwipeDecision(diffX > 0); } else { resetCardState(false); } swipeStartX = 0; swipeCurrentX = 0; }
+if (newsCard) { newsCard.addEventListener('mousedown', unifiedSwipeStart); newsCard.addEventListener('touchstart', unifiedSwipeStart, { passive: true }); newsCard.addEventListener('touchmove', unifiedSwipeMove, { passive: false }); newsCard.addEventListener('touchend', unifiedSwipeEnd); newsCard.addEventListener('touchcancel', unifiedSwipeEnd); } else { console.error("Haber kartı (newsCard) DOM'da bulunamadı! Swipe çalışmayacak."); }
+async function handleShareResults() { /* ... (önceki gibi) ... */ if (!newsData || newsData.length === 0) { alert("Paylaşılacak bir sonuç bulunamadı."); return; } const currentScoreForShare = gamePlayedAtLeastOnce ? score : 0; const shareText = `FakeBreak'de ${currentScoreForShare}/${newsData.length} yaptım! Sen de bu haberlerin gerçek mi sahte mi olduğunu tahmin etmeye çalış. Challenge'a var mısın? 😎`; const shareUrl = window.location.href; const shareTitle = "FakeBreak - Skor Yarışması!"; if (navigator.share) { try { await navigator.share({ title: shareTitle, text: shareText, url: shareUrl }); console.log('Sonuç başarıyla paylaşıldı!'); } catch (error) { console.error('Paylaşım sırasında hata oluştu:', error); if (error.name !== 'AbortError') { alert('Paylaşım sırasında bir hata oluştu.');} } } else { try { await navigator.clipboard.writeText(`${shareTitle}\n${shareText}\n${shareUrl}`); alert('Paylaşım özelliği bu tarayıcıda desteklenmiyor. Skorun ve davet mesajın panoya kopyalandı, istediğin yerde paylaşabilirsin!'); } catch (err) { alert('Paylaşım özelliği bu tarayıcıda desteklenmiyor ve metin panoya kopyalanamadı. Lütfen skoru manuel olarak paylaşın.'); console.error('Panoya kopyalama başarısız:', err); } } }
+if (howToPlayButton && modal && closeModalButton) { /* ... (önceki gibi) ... */ const openHowToPlayModal = () => { if (modal) { modal.classList.remove('hidden'); modal.classList.add('flex'); } }; const closeHowToPlayModal = () => { if (modal) { modal.classList.add('hidden'); modal.classList.remove('flex'); } }; howToPlayButton.addEventListener('click', openHowToPlayModal); closeModalButton.addEventListener('click', closeHowToPlayModal); modal.addEventListener('click', (event) => { if (event.target === modal) { closeHowToPlayModal(); } }); } else { console.error("Modal ('Nasıl Oynanır') elementleri bulunamadı."); }
+if (aboutBtn && aboutModal && closeAboutModalBtn) { /* ... (önceki gibi) ... */ const openAboutModal = () => { if (aboutModal) { aboutModal.classList.remove('hidden'); aboutModal.classList.add('flex'); } }; const closeAboutModal = () => { if (aboutModal) { aboutModal.classList.add('hidden'); aboutModal.classList.remove('flex'); } }; aboutBtn.addEventListener('click', openAboutModal); closeAboutModalBtn.addEventListener('click', closeAboutModal); aboutModal.addEventListener('click', (event) => { if (event.target === aboutModal) { closeAboutModal(); } }); } else { console.error("Hakkında Modal elementleri bulunamadı."); }
+if (homeNavProfile && profileDisabledPopup) { /* ... (önceki gibi) ... */ homeNavProfile.addEventListener('click', (e) => { e.preventDefault(); if (profilePopupTimeoutId) { clearTimeout(profilePopupTimeoutId); } profileDisabledPopup.classList.remove('opacity-0', 'pointer-events-none'); profileDisabledPopup.classList.add('opacity-100'); profilePopupTimeoutId = setTimeout(() => { profileDisabledPopup.classList.remove('opacity-100'); profileDisabledPopup.classList.add('opacity-0'); setTimeout(() => { if (!profileDisabledPopup.classList.contains('opacity-100')) { profileDisabledPopup.classList.add('pointer-events-none'); } }, 300); profilePopupTimeoutId = null; }, 2500); }); }
 
-function navigateToResults() {
-    resetGame();
-    if (!gamePlayedAtLeastOnce) {
-        if (finalScoreValue) finalScoreValue.textContent = "0/0";
-        if (timeTakenValue) timeTakenValue.textContent = "-";
-        let hs = parseInt(localStorage.getItem('fakeOrTakeHighScore_tr')) || 0;
-        let totalQDisplay = newsData && newsData.length > 0 ? newsData.length : "X";
-        if (highScoreDisplay) highScoreDisplay.textContent = `${hs}/${totalQDisplay}`;
-    } else {
-        if (finalScoreValue && typeof score !== 'undefined' && newsData && newsData.length > 0) {
-             finalScoreValue.textContent = `${score}/${newsData.length}`;
-        }
-        let hs = parseInt(localStorage.getItem('fakeOrTakeHighScore_tr')) || 0;
-        if (highScoreDisplay && newsData && newsData.length > 0) {
-            highScoreDisplay.textContent = `${hs}/${newsData.length}`;
-        }
-    }
-    populateLeaderboard();
-    showScreen(resultsScreen);
-}
-
-
-function unifiedSwipeStart(e) {
-    if (!newsCard || newsCard.classList.contains('fly-out-left') || newsCard.classList.contains('fly-out-right')) return;
-    if (animateInTimeoutId) { clearTimeout(animateInTimeoutId); animateInTimeoutId = null; }
-    if (newsCard.classList.contains('enter-anim') || (newsCard.style.animation && newsCard.style.animation !== 'none')) {
-        newsCard.classList.remove('enter-anim', 'active');
-        newsCard.style.animation = 'none';
-        newsCard.style.visibility = 'visible';
-    }
-    newsCard.style.opacity = '1'; newsCard.style.transform = '';
-    isSwiping = true; isMouseSwiping = (e.type === 'mousedown');
-    swipeStartX = isMouseSwiping ? e.pageX : e.touches[0].pageX;
-    newsCard.style.transition = 'none'; newsCard.classList.add('swiping');
-    if (isMouseSwiping) { document.addEventListener('mousemove', unifiedSwipeMove); document.addEventListener('mouseup', unifiedSwipeEnd); }
-}
-function unifiedSwipeMove(e) {
-    if (!isSwiping || !newsCard) return;
-    swipeCurrentX = isMouseSwiping ? e.pageX : e.touches[0].pageX; let diffX = swipeCurrentX - swipeStartX;
-    if (e.type === 'touchmove' && Math.abs(diffX) > 5 && e.cancelable) { e.preventDefault(); }
-    let rotation = diffX * CARD_ROTATION_FACTOR; rotation = Math.max(-CARD_MAX_ROTATION, Math.min(CARD_MAX_ROTATION, rotation));
-    const newTransform = `translateX(${diffX}px) rotate(${rotation}deg)`;
-    requestAnimationFrame(() => { if (isSwiping) { newsCard.style.transform = newTransform; } });
-    if (diffX > SWIPE_THRESHOLD / 1.8) { swipeRealIndicator.classList.add('visible'); swipeFakeIndicator.classList.remove('visible');
-    } else if (diffX < -SWIPE_THRESHOLD / 1.8) { swipeFakeIndicator.classList.add('visible'); swipeRealIndicator.classList.remove('visible');
-    } else { swipeRealIndicator.classList.remove('visible'); swipeFakeIndicator.classList.remove('visible'); }
-}
-function unifiedSwipeEnd(e) {
-    if (!isSwiping || !newsCard) return;
-    if (isMouseSwiping) { document.removeEventListener('mousemove', unifiedSwipeMove); document.removeEventListener('mouseup', unifiedSwipeEnd); }
-    isSwiping = false; isMouseSwiping = false; newsCard.classList.remove('swiping');
-    let diffX = swipeCurrentX - swipeStartX;
-    if (Math.abs(diffX) > SWIPE_THRESHOLD) {
-        if (diffX > 0) { swipeRealIndicator.classList.add('visible'); } else { swipeFakeIndicator.classList.add('visible'); }
-        processSwipeDecision(diffX > 0);
-    } else {
-        resetCardState(false);
-    }
-    swipeStartX = 0; swipeCurrentX = 0;
-}
-if (newsCard) {
-    newsCard.addEventListener('mousedown', unifiedSwipeStart);
-    newsCard.addEventListener('touchstart', unifiedSwipeStart, { passive: true });
-    newsCard.addEventListener('touchmove', unifiedSwipeMove, { passive: false });
-    newsCard.addEventListener('touchend', unifiedSwipeEnd);
-    newsCard.addEventListener('touchcancel', unifiedSwipeEnd);
-} else { console.error("Haber kartı (newsCard) DOM'da bulunamadı! Swipe çalışmayacak."); }
-
-async function handleShareResults() {
-    if (!newsData || newsData.length === 0) { alert("Paylaşılacak bir sonuç bulunamadı."); return; }
-    const currentScoreForShare = gamePlayedAtLeastOnce ? score : 0;
-    const shareText = `FakeBreak'de ${currentScoreForShare}/${newsData.length} yaptım! Sen de bu haberlerin gerçek mi sahte mi olduğunu tahmin etmeye çalış. Challenge'a var mısın? 😎`;
-    const shareUrl = window.location.href; const shareTitle = "FakeBreak - Skor Yarışması!";
-    if (navigator.share) {
-        try { await navigator.share({ title: shareTitle, text: shareText, url: shareUrl }); console.log('Sonuç başarıyla paylaşıldı!'); }
-        catch (error) { console.error('Paylaşım sırasında hata oluştu:', error); if (error.name !== 'AbortError') { alert('Paylaşım sırasında bir hata oluştu.');} }
-    } else {
-        try { await navigator.clipboard.writeText(`${shareTitle}\n${shareText}\n${shareUrl}`); alert('Paylaşım özelliği bu tarayıcıda desteklenmiyor. Skorun ve davet mesajın panoya kopyalandı, istediğin yerde paylaşabilirsin!'); }
-        catch (err) { alert('Paylaşım özelliği bu tarayıcıda desteklenmiyor ve metin panoya kopyalanamadı. Lütfen skoru manuel olarak paylaşın.'); console.error('Panoya kopyalama başarısız:', err); }
-    }
-}
-
-if (howToPlayButton && modal && closeModalButton) {
-    const openHowToPlayModal = () => { if (modal) { modal.classList.remove('hidden'); modal.classList.add('flex'); } };
-    const closeHowToPlayModal = () => { if (modal) { modal.classList.add('hidden'); modal.classList.remove('flex'); } };
-    howToPlayButton.addEventListener('click', openHowToPlayModal);
-    closeModalButton.addEventListener('click', closeHowToPlayModal);
-    modal.addEventListener('click', (event) => { if (event.target === modal) { closeHowToPlayModal(); } });
-} else { console.error("Modal ('Nasıl Oynanır') elementleri bulunamadı."); }
-
-if (aboutBtn && aboutModal && closeAboutModalBtn) {
-    const openAboutModal = () => { if (aboutModal) { aboutModal.classList.remove('hidden'); aboutModal.classList.add('flex'); } };
-    const closeAboutModal = () => { if (aboutModal) { aboutModal.classList.add('hidden'); aboutModal.classList.remove('flex'); } };
-    aboutBtn.addEventListener('click', openAboutModal);
-    closeAboutModalBtn.addEventListener('click', closeAboutModal);
-    aboutModal.addEventListener('click', (event) => { if (event.target === aboutModal) { closeAboutModal(); } });
-} else { console.error("Hakkında Modal elementleri bulunamadı."); }
-
-if (homeNavProfile && profileDisabledPopup) {
-    homeNavProfile.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (profilePopupTimeoutId) { clearTimeout(profilePopupTimeoutId); }
-        profileDisabledPopup.classList.remove('opacity-0', 'pointer-events-none');
-        profileDisabledPopup.classList.add('opacity-100');
-        profilePopupTimeoutId = setTimeout(() => {
-            profileDisabledPopup.classList.remove('opacity-100');
-            profileDisabledPopup.classList.add('opacity-0');
-            setTimeout(() => {
-                if (!profileDisabledPopup.classList.contains('opacity-100')) {
-                    profileDisabledPopup.classList.add('pointer-events-none');
-                }
-            }, 300);
-            profilePopupTimeoutId = null;
-        }, 2500);
-    });
-}
-
+// --- showEditorHint GÜNCELLENDİ ---
 function showEditorHint() {
-    if (editorHintUsedThisGame || currentQuestionIndex >= newsData.length || !activeEditorForCurrentQuestion) return;
+    if (editorHintUsedThisGame || currentQuestionIndex >= newsData.length) return;
 
-    editorWhoGaveHint = activeEditorForCurrentQuestion;
+    clearInterval(timerInterval); // Süreyi durdur
+
     const currentQuestionData = newsData[currentQuestionIndex];
-    const editorForModal = editorWhoGaveHint;
+    const designatedEditorName = currentQuestionData.hintEditorName;
+    const specificHintText = currentQuestionData.hintSpecificText;
+    const editorForModalDisplay = editors.find(e => e.name === designatedEditorName);
 
-    let hintText = currentQuestionData.editorHint;
-    if (!hintText && editorForModal.genericHints && editorForModal.genericHints.length > 0) {
-        hintText = editorForModal.genericHints[Math.floor(Math.random() * editorForModal.genericHints.length)];
+    if (!editorForModalDisplay) {
+        console.error("İpucu için modalda gösterilecek editör bulunamadı:", designatedEditorName);
+        if (timeLeft > 0) startTimer(true); // Süreyi devam ettir eğer hata oluşursa
+        return;
     }
-    if (!hintText) hintText = "Şu an için özel bir ipucum yok ama dikkatli ol!";
+    
+    editorWhoGaveHint = editorForModalDisplay;
 
-    editorIcon.src = editorForModal.icon || "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
-    editorIcon.alt = editorForModal.name + " ikonu";
-    editorIcon.style.borderRadius = '0.75rem'; // Ensure modal icon is also rounded square
-    editorName.textContent = editorForModal.name;
+    if(editorIcon) {
+        editorIcon.src = editorForModalDisplay.icon || "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+        editorIcon.alt = editorForModalDisplay.name + " ikonu";
+    }
+    if(editorName) editorName.textContent = editorForModalDisplay.name;
+    if(editorQuote) editorQuote.innerHTML = specificHintText;
 
-    editorQuote.innerHTML = hintText;
-    editorQuote.classList.remove('editor-quote-appear');
-    void editorQuote.offsetWidth;
-    editorQuote.classList.add('editor-quote-appear');
+    if(editorQuote) {
+        editorQuote.classList.remove('editor-quote-appear'); void editorQuote.offsetWidth; editorQuote.classList.add('editor-quote-appear');
+    }
 
-    editorHintModal.classList.remove('hidden');
-    editorHintModal.classList.add('flex');
-
+    editorHintModal.classList.remove('hidden'); editorHintModal.classList.add('flex');
     editorHintUsedThisGame = true;
-
-    askEditorBtn.classList.add('disabled');
+    
+    // Butonu "meşgul" durumuna hemen getir
+    askEditorBtn.classList.add('disabled', 'busy-state');
     askEditorBtn.disabled = true;
-    askEditorBtnText.textContent = "Kullanıldı!";
-    if(askEditorBtnIcon && editorWhoGaveHint && editorWhoGaveHint.icon) {
-        askEditorBtnIcon.src = editorWhoGaveHint.icon;
-        askEditorBtnIcon.alt = editorWhoGaveHint.name;
-        askEditorBtnIcon.classList.remove('hidden');
-    } else if (askEditorBtnIcon) {
-        askEditorBtnIcon.classList.add('hidden');
+    if (editorWhoGaveHint && editorWhoGaveHint.icon) {
+        askEditorBtnIcon.src = editorWhoGaveHint.icon; askEditorBtnIcon.alt = editorWhoGaveHint.name; askEditorBtnIcon.classList.remove('hidden');
+    } else askEditorBtnIcon.classList.add('hidden');
+
+askEditorBtnText.innerHTML = `
+  <span style="display: inline-flex; align-items: center; gap: 6px;">
+    <span>Editör meşgul</span>
+    <span class="editor-busy-qmark-wrapper" style="position: relative;">
+      <span id="editorBusyHintIcon" class="material-icons-outlined editor-busy-qmark">help_outline</span>
+      <div id="editorBusyPopup">Editör şu an meşgul: ${editorBusyReasons[editorWhoGaveHint.name] || "Bir şeylerle uğraşıyor!"}</div>
+    </span>
+  </span>
+`;
+    
+    const editorBusyHintIconElement = document.getElementById('editorBusyHintIcon');
+    if (editorBusyHintIconElement && editorBusyPopup && editorWhoGaveHint) {
+        if (currentBusyIconClickListener) editorBusyHintIconElement.removeEventListener('click', currentBusyIconClickListener);
+        currentBusyIconClickListener = (event) => {
+            event.stopPropagation();
+            if (busyPopupTimeoutId) clearTimeout(busyPopupTimeoutId);
+            const reason = editorBusyReasons[editorWhoGaveHint.name] || "Bir şeylerle uğraşıyor!";
+            editorBusyPopup.textContent = `${editorWhoGaveHint.name}: ${reason}`;
+            editorBusyPopup.style.display = 'block';
+            busyPopupTimeoutId = setTimeout(() => { editorBusyPopup.style.display = 'none'; }, 2500);
+        };
+        editorBusyHintIconElement.addEventListener('click', currentBusyIconClickListener);
     }
+    askEditorBtn.onclick = null; // Ana tıklama işlevini kaldır
 }
 
-if (askEditorBtn) {
-    askEditorBtn.addEventListener('click', showEditorHint);
+if (askEditorBtn) { // Bu listener artık updateUIForNewQuestion içinde yönetiliyor
+    // askEditorBtn.addEventListener('click', () => {
+    //     if (!editorHintUsedThisGame) {
+    //         showEditorHint();
+    //     }
+    // });
 }
+
 if (closeEditorHintBtn) {
     closeEditorHintBtn.addEventListener('click', () => {
-        editorHintModal.classList.add('hidden');
-        editorHintModal.classList.remove('flex');
-        editorQuote.classList.remove('editor-quote-appear');
+        editorHintModal.classList.add('hidden'); editorHintModal.classList.remove('flex');
+        if(editorQuote) editorQuote.classList.remove('editor-quote-appear');
+        if (timeLeft > 0 && !timerInterval) startTimer(true); // Süreyi devam ettir
     });
 }
 if (editorHintModal) {
     editorHintModal.addEventListener('click', (event) => {
         if (event.target === editorHintModal) {
-            editorHintModal.classList.add('hidden');
-            editorHintModal.classList.remove('flex');
-            editorQuote.classList.remove('editor-quote-appear');
+            editorHintModal.classList.add('hidden'); editorHintModal.classList.remove('flex');
+            if(editorQuote) editorQuote.classList.remove('editor-quote-appear');
+            if (timeLeft > 0 && !timerInterval) startTimer(true); // Süreyi devam ettir
         }
     });
 }
-
 
 if (playNowButton) { playNowButton.addEventListener('click', startGame); }
 if (closeGameButton) { closeGameButton.addEventListener('click', navigateToHome); }
@@ -1231,26 +918,12 @@ if(shareResultsBtn) shareResultsBtn.addEventListener('click', handleShareResults
 if(playAgainBtn) playAgainBtn.addEventListener('click', startGame);
 if(backToHomeResultsBtn) backToHomeResultsBtn.addEventListener('click', navigateToHome);
 if(closeResultsHeaderBtn) closeResultsHeaderBtn.addEventListener('click', navigateToHome);
-
 [homeNavHome, gameNavHome].forEach(el => el?.addEventListener('click', (e) => { e.preventDefault(); navigateToHome(); }));
 [homeNavScores, gameNavScores, leaderboardBtnHome].forEach(el => el?.addEventListener('click', (e) => { e.preventDefault(); navigateToResults(); }));
-
-
-if (!gamePlayedAtLeastOnce) {
-    if (finalScoreValue) finalScoreValue.textContent = "0/0";
-    if (timeTakenValue) timeTakenValue.textContent = "-";
-    let hs = parseInt(localStorage.getItem('fakeOrTakeHighScore_tr')) || 0;
-    let totalQDisplay = newsData && newsData.length > 0 ? newsData.length : "X";
-    if (highScoreDisplay) highScoreDisplay.textContent = `${hs}/${totalQDisplay}`;
-}
-
+if (!gamePlayedAtLeastOnce) { if (finalScoreValue) finalScoreValue.textContent = "0/0"; if (timeTakenValue) timeTakenValue.textContent = "-"; let hs = parseInt(localStorage.getItem('fakeOrTakeHighScore_tr')) || 0; let totalQDisplay = newsData && newsData.length > 0 ? newsData.length : "X"; if (highScoreDisplay) highScoreDisplay.textContent = `${hs}/${totalQDisplay}`; }
 showScreen(homeScreenDiv);
 if(document.body) document.body.classList.remove('loading');
-
-if (newsData && newsData.length > 0) {
-    startPreloadingNewsImages();
-}
-
+if (newsData && newsData.length > 0) startPreloadingNewsImages();
 });
 </script>
 </body>
