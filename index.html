@@ -1103,14 +1103,33 @@ async function handleShareResults() {
         alert("Paylaşılacak bir sonuç bulunamadı.");
         return;
     }
+
     const currentScoreForShare = gamePlayedAtLeastOnce ? score : 0;
-    const currentPlayerNicknameForShare = playerNickname || "Bir Oyuncu"; // Eğer bir şekilde takma ad yoksa varsayılan
+    const currentPlayerNicknameForShare = ensurePlayerNickname() || "Bir Oyuncu";
 
     const shareText = `${currentPlayerNicknameForShare}, FakeBreak'de ${currentScoreForShare}/${newsData.length} yaptı! Sen de bu haberlerin gerçek mi sahte mi olduğunu tahmin etmeye çalış. Challenge'a var mısın? 😎`;
     const shareUrl = window.location.href;
     const shareTitle = "FakeBreak - Skor Yarışması!";
 
-    // ... (navigator.share ve clipboard kopyalama mantığı aynı kalır)
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: shareTitle,
+                text: shareText,
+                url: shareUrl
+            });
+        } catch (err) {
+            console.error("Paylaşım iptal edildi veya başarısız oldu:", err);
+        }
+    } else {
+        try {
+            await navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
+            alert("Sonuç panoya kopyalandı. Paylaşmak için yapıştırabilirsiniz!");
+        } catch (err) {
+            console.error("Panoya kopyalanamadı:", err);
+            alert("Paylaşım desteklenmiyor. Manuel olarak kopyalayabilirsiniz.");
+        }
+    }
 }
 if (howToPlayButton && modal && closeModalButton) { const openHowToPlayModal = () => { if (modal) { modal.classList.remove('hidden'); modal.classList.add('flex'); } }; const closeHowToPlayModal = () => { if (modal) { modal.classList.add('hidden'); modal.classList.remove('flex'); } }; howToPlayButton.addEventListener('click', openHowToPlayModal); closeModalButton.addEventListener('click', closeHowToPlayModal); modal.addEventListener('click', (event) => { if (event.target === modal) { closeHowToPlayModal(); } }); } else { console.error("Modal ('Nasıl Oynanır') elementleri bulunamadı."); }
 if (aboutBtn && aboutModal && closeAboutModalBtn) { const openAboutModal = () => { if (aboutModal) { aboutModal.classList.remove('hidden'); aboutModal.classList.add('flex'); } }; const closeAboutModal = () => { if (aboutModal) { aboutModal.classList.add('hidden'); aboutModal.classList.remove('flex'); } }; aboutBtn.addEventListener('click', openAboutModal); closeAboutModalBtn.addEventListener('click', closeAboutModal); aboutModal.addEventListener('click', (event) => { if (event.target === aboutModal) { closeAboutModal(); } }); } else { console.error("Hakkında Modal elementleri bulunamadı."); }
