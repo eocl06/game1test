@@ -205,9 +205,9 @@ html, body { height: 100%; overflow: hidden; margin: 0; padding: 0; }
 
 #editorBusyPopup {
   position: absolute;
-  top: 50%;
-  left: calc(100% + 4px); /* daha yakın olsun diye 6 → 4 yaptık */
-  transform: translateY(-50%);
+  top: calc(100% + 6px); /* İkonun ALTINA yerleştirir */
+  left: 50%;              /* Ortalamak için */
+  transform: translateX(-50%); /* X ekseninde ortalama */
   background-color: #1F2937;
   color: #F9FAFB;
   padding: 0.4rem 0.7rem;
@@ -219,6 +219,7 @@ html, body { height: 100%; overflow: hidden; margin: 0; padding: 0; }
   z-index: 100;
   font-family: 'Noto Sans', sans-serif;
 }
+
 
 /* Zamanlayıcı Kutusu */
 #timerSecondsBox {
@@ -335,7 +336,7 @@ html, body { height: 100%; overflow: hidden; margin: 0; padding: 0; }
 </div>
 </header>
 <main class="flex-1 overflow-y-auto p-4 flex flex-col items-center justify-start space-y-3 sm:space-y-4">
-<div class="flex justify-center items-center gap-24 my-3">
+<div class="flex justify-center items-center gap-16 my-3">
   <div class="flex flex-col items-center">
     <div id="timerSecondsBox">
       <p id="timerSeconds">15</p>
