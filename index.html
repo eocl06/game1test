@@ -276,25 +276,23 @@ body.loading {
   line-height: 1;
   font-family: 'Lexend', sans-serif;
 }
-@keyframes pulseYellow {
+@keyframes modernAlertPulse {
   0%, 100% {
     transform: scale(1);
-    background: linear-gradient(to bottom right, #F9FAFB, #F3F4F6); /* Default background */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04); /* Default shadow */
-    border: none; /* Default border state */
-    color: #374151; /* Default text color */
+    background: linear-gradient(to bottom right, #FFFDF5, #FFEFC2); /* soft pastel sarı */
+    box-shadow: 0 0 0px rgba(255, 193, 7, 0);
+    border: 1px solid #FFF6DA;
   }
   50% {
-    transform: scale(1.08);
-    background: #FFBF00; /* Yellow background for pulse */
-    box-shadow: 0 6px 15px rgba(255, 191, 0, 0.5); /* Yellowish shadow */
-    border: 2px solid #EAA600; /* Darker yellow border for emphasis */
-    color: #1F2937; /* Text color for better contrast on yellow */
+    transform: scale(1.06);
+    background: linear-gradient(to bottom right, #FFEB3B, #FFD600); /* doygun sarı */
+    box-shadow: 0 0 14px 3px rgba(255, 193, 7, 0.5); /* yumuşak ama göz alıcı glow */
+    border: 2px solid #FFC107;
   }
 }
 
 .ask-editor-inviting:not(.disabled) {
-  animation: pulseYellow 1.5s infinite ease-in-out;
+  animation: modernAlertPulse 1.4s ease-in-out infinite;
 }
 
 /* Editör İpucu Modalı Stilleri */
